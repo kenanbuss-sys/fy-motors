@@ -287,7 +287,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .empty-txt{font-family:var(--H);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase}
 
 /* ═══ MOBILE NAV BOTTOM BAR ═══ */
-.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--dark);border-top:1px solid var(--border);height:58px;grid-template-columns:repeat(5,1fr)}
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9000;background:var(--dark);border-top:1px solid var(--border);height:58px;grid-template-columns:repeat(5,1fr)}
 .mob-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:6px 4px;color:var(--muted);transition:color .15s;font-size:.48rem;font-family:var(--M);letter-spacing:.06em;text-transform:uppercase;border:none;background:none;width:100%}
 .mob-nav-item:hover,.mob-nav-item.active{color:var(--red)}
 .mob-nav-item .mn-ico{font-size:1.1rem;line-height:1}
@@ -298,7 +298,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .mob-more-item .mm-ico{font-size:1.3rem}
 
 /* Mobile topbar */
-.mob-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:300;background:var(--dark);border-bottom:1px solid var(--border);height:52px;align-items:center;padding:0 16px;gap:12px}
+.mob-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:9000;background:var(--dark);border-bottom:1px solid var(--border);height:52px;align-items:center;padding:0 16px;gap:12px}
 .mob-page-title{font-family:var(--H);font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white);flex:1}
 .mob-notif{width:36px;height:36px;background:var(--card);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:.9rem}
 .mob-notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:var(--red);border-radius:50%;border:1.5px solid var(--dark)}
@@ -669,7 +669,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
       </div>
     </div>
 
-    <div class="grid-main-side" style="align-items:start">
+    <div class="grid-main-side" id="dashMainGrid" style="align-items:start">
       <div style="display:flex;flex-direction:column;gap:16px">
         <!-- Recent inquiries -->
         <div class="card">
@@ -1307,9 +1307,15 @@ async function initDashboard(){
     }}); }
     if(SB_ONLINE){
       showToast('✓ Podaci učitani iz baze');
-      // Update badge counts
-      document.getElementById('badge-upiti').textContent = DATA.upiti.filter(function(u){return u.status==='novi'}).length;
-      document.getElementById('badge-servis').textContent = DATA.servis.filter(function(s){return s.status==='nov'||s.status==='u-toku'}).length;
+      var nu = DATA.upiti.filter(function(u){return u.status==='novi'}).length;
+      var ns = DATA.servis.filter(function(s){return s.status==='nov'||s.status==='u-toku'}).length;
+      document.getElementById('badge-upiti').textContent = nu;
+      document.getElementById('badge-servis').textContent = ns;
+      // Mobile badges
+      var mbu = document.getElementById('mob-badge-upiti');
+      var mbs = document.getElementById('mob-badge-servis');
+      if(mbu) mbu.textContent = nu||'';
+      if(mbs) mbs.textContent = ns||'';
     }
   } catch(e) {
     console.warn('Supabase load failed, using demo data');
@@ -1331,15 +1337,15 @@ function renderDashboard(){
   var max=Math.max.apply(null,vals);
   var bc=document.getElementById('barChart');
   var bl=document.getElementById('barLabels');
-  if(bc){
+  if(bc&&bc.offsetParent!==null || bc){
     bc.innerHTML=vals.map(function(v,i){return'<div class="bar'+(i===4?' active-bar':'')+'" style="height:'+(v/max*100)+'%" title="'+v+' upita"></div>'}).join('');
     bl.innerHTML=days.map(function(d){return'<div class="bar-label">'+d+'</div>'}).join('');
   }
 
   // Top products
   var tp=document.getElementById('topProds');
-  var prods=[{name:'Lonking CDM6065',cnt:7,pct:70},{name:'Lonking LG20DT III',cnt:5,pct:50},{name:'Lonking CPD25',cnt:4,pct:40},{name:'Lonking CDM835',cnt:3,pct:30}];
-  if(tp) tp.innerHTML=prods.map(function(p,i){return'<div class="progress-item"><div class="progress-header"><span class="progress-name">'+p.name+'</span><span class="progress-val">'+p.cnt+' upita</span></div><div class="progress-bar"><div class="progress-fill '+(i===0?'':'i===1?g:i===2?o:b')+'" style="width:'+p.pct+'%"></div></div></div>'}).join('');
+  var prods=[{name:'Lonking CDM6065',cnt:7,pct:70,cls:''},{name:'Lonking LG20DT III',cnt:5,pct:50,cls:'g'},{name:'Lonking CPD25',cnt:4,pct:40,cls:'o'},{name:'Lonking CDM835',cnt:3,pct:30,cls:'b'}];
+  if(tp) tp.innerHTML=prods.map(function(p){return'<div class="progress-item"><div class="progress-header"><span class="progress-name">'+p.name+'</span><span class="progress-val">'+p.cnt+' upita</span></div><div class="progress-bar"><div class="progress-fill '+p.cls+'" style="width:'+p.pct+'%"></div></div></div>'}).join('');
 
   // Activity
   var log=document.getElementById('activityLog');
@@ -1351,6 +1357,9 @@ function renderDashboard(){
     {dot:'',t:'15.05',txt:'Upit <strong>UP-003</strong> – Euroterm d.o.o.'},
   ];
   if(log) log.innerHTML=acts.map(function(a){return'<div class="tl-item"><div class="tl-dot '+a.dot+'"></div><div class="tl-time">'+a.t+'</div><div class="tl-text">'+a.txt+'</div></div>'}).join('');
+
+  // Update mobile stats after render
+  if(typeof updateMobStats==='function') updateMobStats();
 }
 
 // ══════════════════════════════════
