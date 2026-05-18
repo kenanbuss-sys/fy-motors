@@ -20,15 +20,15 @@ img{display:block;max-width:100%}
 }
 
 /* ══ LOADER ══ */
-#loader{position:fixed;inset:0;z-index:9999;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .7s,visibility .7s}
+#loader{position:fixed;inset:0;z-index:9999;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .6s ease,visibility .6s ease}
 #loader.done{opacity:0;visibility:hidden;pointer-events:none}
-.ld-logo{font-family:var(--H);font-weight:700;font-size:3rem;letter-spacing:.06em;color:#fff;opacity:0;transform:translateY(16px);animation:ldIn .7s .1s forwards}
+.ld-logo{font-family:var(--H);font-weight:700;font-size:3rem;letter-spacing:.06em;color:#fff;opacity:0;transform:translateY(16px);animation:ldIn .6s .05s forwards}
 .ld-logo em{color:var(--red);font-style:normal}
 @keyframes ldIn{to{opacity:1;transform:none}}
 .ld-bar{width:240px;height:3px;background:rgba(255,255,255,.1);overflow:hidden}
-.ld-fill{height:100%;background:var(--red);width:0;animation:ldFill 1.8s cubic-bezier(.4,0,.2,1) forwards}
-@keyframes ldFill{0%{width:0}60%{width:75%}100%{width:100%}}
-.ld-sub{font-family:var(--H);font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);opacity:0;animation:ldIn .7s .4s forwards}
+.ld-fill{height:100%;background:var(--red);width:0;animation:ldFill 1.5s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes ldFill{0%{width:0}60%{width:80%}100%{width:100%}}
+.ld-sub{font-family:var(--H);font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);opacity:0;animation:ldIn .6s .3s forwards}
 
 /* ══ UTIL BAR ══ */
 .util{background:#111;color:rgba(255,255,255,.65);font-size:.73rem;letter-spacing:.04em;padding:7px 0}
@@ -1176,12 +1176,15 @@ const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.targe
 document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
 
 /* ═══ LOADER ═══ */
-window.addEventListener('load',()=>{
-  setTimeout(()=>{document.getElementById('loader').classList.add('done')},2000);
-  // sidebar open on desktop
-  if(window.innerWidth>768){const sb=document.getElementById('sbBody');if(sb)sb.style.display='block';}
+// Dismiss loader after 1.6s from DOM ready — does NOT wait for images
+function dismissLoader(){
+  document.getElementById('loader').classList.add('done');
+  if(window.innerWidth>768){var sb=document.getElementById('sbBody');if(sb)sb.style.display='block';}
   applyF();
-});
+}
+document.addEventListener('DOMContentLoaded',function(){setTimeout(dismissLoader,1600)});
+// Safety: if DOM already ready when script runs
+if(document.readyState!=='loading'){setTimeout(dismissLoader,1600);}
 </script>
 </body>
 </html>
