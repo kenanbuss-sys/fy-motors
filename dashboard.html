@@ -1196,20 +1196,24 @@ function hasPerm(m){var p=PERMS[CUR_USER];return p&&(p[m]==='full'||p[m]==='view
 function canEdit(m){var p=PERMS[CUR_USER];return p&&p[m]==='full';}
 
 function applyPerms(){
+  var allNav=document.querySelectorAll('.nav-item');
   MODULI.forEach(function(m){
-    var el=document.querySelector('.nav-item[onclick*="''+m.key+''"]');
-    if(!el)return;
     var perm=(PERMS[CUR_USER]||{})[m.key]||'none';
-    el.style.display=perm==='none'?'none':'flex';
-    var tag=el.querySelector('.perm-tag');
-    if(tag)tag.remove();
-    if(perm==='view'){
-      var t=document.createElement('span');
-      t.className='perm-tag';
-      t.style.cssText='font-family:var(--M);font-size:.5rem;color:var(--muted);margin-left:auto';
-      t.textContent='👁';
-      el.appendChild(t);
-    }
+    allNav.forEach(function(el){
+      var oc=el.getAttribute('onclick')||'';
+      if(oc.indexOf("'"+m.key+"'")!==-1){
+        el.style.display=perm==='none'?'none':'flex';
+        var tag=el.querySelector('.perm-tag');
+        if(tag)tag.remove();
+        if(perm==='view'){
+          var t=document.createElement('span');
+          t.className='perm-tag';
+          t.style.cssText='font-family:var(--M);font-size:.5rem;color:var(--muted);margin-left:auto';
+          t.textContent='👁';
+          el.appendChild(t);
+        }
+      }
+    });
   });
 }
 
@@ -1222,7 +1226,7 @@ function renderKorisnici(){
     var ltr=u.ime.charAt(0);
     var bc=u.uloga==='superadmin'?'badge-red':u.uloga==='prodaja'?'badge-green':'badge-blue';
     var btn=isAdmin&&u.uloga!=='superadmin'
-      ?'<button class="btn btn-primary" style="padding:5px 10px;font-size:.62rem" onclick="openPermModal(''+u.username+'')">✏ Permisije</button>'
+      ?'<button class="btn btn-primary" style="padding:5px 10px;font-size:.62rem" onclick="openPermModal(\'' + u.username + '\')">✏ Permisije</button>'
       :(u.uloga==='superadmin'?'<span style="font-family:var(--M);font-size:.6rem;color:var(--muted)">puni pristup</span>':'');
     return'<tr><td><div class="avatar sm">'+ltr+'</div></td>'
       +'<td><div style="font-weight:600;font-size:.84rem">'+u.ime+'</div><div style="font-family:var(--M);font-size:.6rem;color:var(--mid)">@'+u.username+'</div></td>'
