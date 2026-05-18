@@ -798,7 +798,45 @@ tr:hover td{background:rgba(255,255,255,.02)}
 <div id="toast" style="position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border2);border-left:3px solid var(--green);color:var(--white);padding:12px 20px;font-size:.8rem;font-family:var(--M);opacity:0;transform:translateY(12px);transition:all .3s;z-index:999;pointer-events:none;border-radius:2px;max-width:300px"></div>
 
 <script>
-// ══════════════════════════════════
+// ═══════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════
+var SB_URL = 'https://zzkxzzmiabnyigqzioor.supabase.co';
+var SB_KEY = 'sb_publishable_2MrVIVIc_-jU8NOsnUWxEw_YHndtw7w';
+
+async function sbFetch(table, method, body, params){
+  var url = SB_URL + '/rest/v1/' + table + (params||'');
+  var opts = {
+    method: method||'GET',
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': 'Bearer ' + SB_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': method==='POST'?'return=representation':'',
+    }
+  };
+  if(body) opts.body = JSON.stringify(body);
+  try {
+    var r = await fetch(url, opts);
+    if(!r.ok){ var e=await r.text(); throw new Error(e); }
+    if(r.status===204) return true;
+    return await r.json();
+  } catch(e) {
+    console.warn('Supabase error:', e.message);
+    return null;
+  }
+}
+
+async function sbGet(table, params){ return sbFetch(table,'GET',null,params||'?order=created_at.desc&limit=100'); }
+async function sbPost(table, data){ return sbFetch(table,'POST',data); }
+async function sbPatch(table, id, data){ return sbFetch(table,'PATCH',data,'?id=eq.'+id); }
+async function sbDelete(table, id){ return sbFetch(table,'DELETE',null,'?id=eq.'+id); }
+
+var SB_ONLINE = false; // will be set after first successful fetch
+
+// ═══════════════════════════════════════
+// DATA (fallback demo dok nema konekcije)
+// ═══════════════════════════════════════
 // DATA
 // ══════════════════════════════════
 var DATA = {
@@ -949,7 +987,64 @@ document.querySelectorAll('.modal-bg').forEach(function(m){
 // ══════════════════════════════════
 // DASHBOARD
 // ══════════════════════════════════
-function initDashboard(){renderDashboard();}
+async function initDashboard(){
+  // Try to load from Supabase
+  showToast('Učitavanje podataka...', 'info');
+  try {
+    var [upiti, klijenti, servis, proizvodi, ponude, eventi] = await Promise.all([
+      sbGet('upiti'),
+      sbGet('klijenti'),
+      sbGet('servis'),
+      sbGet('proizvodi'),
+      sbGet('ponude'),
+      sbGet('eventi')
+    ]);
+    if(upiti){ DATA.upiti = upiti.map(function(u){ return {
+      id: 'UP-'+u.id.slice(0,6).toUpperCase(),
+      klijent: u.klijent, tip: u.tip||'fiz',
+      masina: u.masina||'–', vrijednost: parseFloat(u.vrijednost)||0,
+      status: u.status||'novi', datum: (u.created_at||'').slice(0,10),
+      prioritet: u.prioritet||'normalan', _id: u.id
+    }}); SB_ONLINE=true; }
+    if(klijenti){ DATA.klijenti = klijenti.map(function(k){ return {
+      id: 'KL-'+k.id.slice(0,6).toUpperCase(),
+      ime: k.ime, tip: k.tip||'fiz', tel: k.telefon||'–',
+      email: k.email||'–', grad: k.grad||'–',
+      upiti: 0, status: k.status||'aktivan', _id: k.id
+    }}); }
+    if(servis){ DATA.servis = servis.map(function(s){ return {
+      id: 'SRV-'+s.id.slice(0,6).toUpperCase(),
+      klijent: s.klijent, masina: s.masina||'–',
+      vrsta: s.vrsta||'–', tehnicar: s.tehnicar||'–',
+      status: s.status||'nov', datum: (s.datum_zahtjeva||'').slice(0,10),
+      prioritet: s.prioritet||'normalan', _id: s.id
+    }}); }
+    if(proizvodi){ DATA.proizvodi = proizvodi.map(function(p){ return {
+      id: p.id, naziv: p.naziv, kat: p.kategorija||'–',
+      cijena: parseFloat(p.cijena)||0, stanje: p.stanje||'Na stanju',
+      vidljivo: p.vidljivo!==false, badge: p.badge||null, _id: p.id
+    }}); }
+    if(ponude){ DATA.ponude = ponude.map(function(p){ return {
+      id: 'PON-'+p.id.slice(0,6).toUpperCase(),
+      klijent: p.klijent, masine: p.masine||'–',
+      iznos: parseFloat(p.iznos)||0, status: p.status||'Nacrt',
+      datum: (p.created_at||'').slice(0,10), _id: p.id
+    }}); }
+    if(eventi){ DATA.events = eventi.map(function(e){ return {
+      datum: e.datum, tip: e.tip||'ostalo',
+      opis: e.opis||'–', boja: e.boja||'red', _id: e.id
+    }}); }
+    if(SB_ONLINE){
+      showToast('✓ Podaci učitani iz baze');
+      // Update badge counts
+      document.getElementById('badge-upiti').textContent = DATA.upiti.filter(function(u){return u.status==='novi'}).length;
+      document.getElementById('badge-servis').textContent = DATA.servis.filter(function(s){return s.status==='nov'||s.status==='u-toku'}).length;
+    }
+  } catch(e) {
+    console.warn('Supabase load failed, using demo data');
+  }
+  renderDashboard();
+}
 
 function renderDashboard(){
   // Recent upiti
@@ -1319,15 +1414,94 @@ function saveSettings(){showToast('Postavke sačuvane!');}
 // ══════════════════════════════════
 // SAVE ACTIONS (demo)
 // ══════════════════════════════════
-function saveUpit(){
-  DATA.upiti.unshift({id:'UP-'+(DATA.upiti.length+1).toString().padStart(3,'0'),klijent:'Novi klijent',tip:'fiz',masina:'Lonking LG20DT III',vrijednost:28500,status:'novi',datum:new Date().toISOString().slice(0,10),prioritet:'normalan'});
-  closeModal('modalUpit');showToast('Upit kreiran!');
+async function saveUpit(){
+  var klijent = document.querySelector('#modalUpit input[placeholder="Ime i prezime / Firma"]');
+  var tel = document.querySelector('#modalUpit input[placeholder="+387 6X XXX XXX"]');
+  var masina = document.getElementById('modalUpitMasina');
+  var vr = document.getElementById('modalUpitVr');
+  var statusEl = document.querySelector('#modalUpit select:nth-of-type(3)');
+  var tipEl = document.querySelector('#modalUpit select:nth-of-type(2)');
+
+  var noviUpit = {
+    klijent: klijent?klijent.value:'Novi klijent',
+    tip: tipEl&&tipEl.value.includes('Pravno')?'prav':'fiz',
+    masina: masina?masina.options[masina.selectedIndex].text.split('–')[0].trim():'–',
+    vrijednost: vr?parseFloat(vr.value)||0:0,
+    status: 'novi', prioritet: 'normalan',
+    telefon: tel?tel.value:''
+  };
+
+  // Save to Supabase if online
+  if(SB_ONLINE){
+    var result = await sbPost('upiti', noviUpit);
+    if(result&&result[0]){
+      noviUpit.id = 'UP-'+result[0].id.slice(0,6).toUpperCase();
+      noviUpit._id = result[0].id;
+      noviUpit.datum = result[0].created_at.slice(0,10);
+    }
+  } else {
+    noviUpit.id = 'UP-'+(DATA.upiti.length+1).toString().padStart(3,'0');
+    noviUpit.datum = new Date().toISOString().slice(0,10);
+  }
+
+  DATA.upiti.unshift(noviUpit);
+  closeModal('modalUpit');
+  showToast('✓ Upit kreiran!');
   document.getElementById('badge-upiti').textContent=DATA.upiti.filter(function(u){return u.status==='novi'}).length;
   if(document.getElementById('view-upiti').classList.contains('active'))renderUpiti();
+  if(document.getElementById('view-dashboard').classList.contains('active'))renderDashboard();
 }
 function saveProd(){closeModal('modalProd');showToast('Proizvod sačuvan!');}
-function saveServis(){closeModal('modalServis');showToast('Servisni zahtjev kreiran!');}
-function saveKlijent(){closeModal('modalKlijent');showToast('Klijent dodan!');}
+async function saveServis(){
+  var kl = document.querySelector('#modalServis input[placeholder="Ime / Firma"]');
+  var masina = document.querySelector('#modalServis select:nth-of-type(1)');
+  var vrsta = document.querySelector('#modalServis select:nth-of-type(2)');
+  var teh = document.querySelector('#modalServis select:nth-of-type(3)');
+  var status = document.querySelector('#modalServis select:nth-of-type(5)');
+
+  var novi = {
+    klijent: kl?kl.value:'Novi zahtjev',
+    masina: masina?masina.value:'–',
+    vrsta: vrsta?vrsta.value:'–',
+    tehnicar: teh?teh.value:'–',
+    status: status?status.value.toLowerCase().replace(' ',''):'-',
+    prioritet: 'normalan',
+    datum_zahtjeva: new Date().toISOString().slice(0,10)
+  };
+
+  if(SB_ONLINE){ await sbPost('servis', novi); }
+  novi.id = 'SRV-'+(DATA.servis.length+1).toString().padStart(3,'0');
+  novi.datum = novi.datum_zahtjeva;
+  DATA.servis.unshift(novi);
+  closeModal('modalServis');
+  showToast('✓ Servisni zahtjev kreiran!');
+  document.getElementById('badge-servis').textContent=DATA.servis.filter(function(s){return s.status==='nov'||s.status==='u-toku'}).length;
+  if(document.getElementById('view-servis').classList.contains('active'))renderServis();
+}
+async function saveKlijent(){
+  var ime = document.querySelector('#modalKlijent input[placeholder="Puno ime ili naziv firme"]');
+  var tel = document.querySelector('#modalKlijent input[placeholder="+387 6X XXX XXX"]');
+  var email = document.querySelector('#modalKlijent input[type="email"]');
+  var grad = document.querySelector('#modalKlijent input[placeholder="Sarajevo"]');
+  var tip = document.querySelector('#modalKlijent input[name="kl-tip"]:checked');
+
+  var novi = {
+    ime: ime?ime.value:'Novi klijent',
+    tip: tip?tip.value:'fiz',
+    telefon: tel?tel.value:'',
+    email: email?email.value:'',
+    grad: grad?grad.value:'',
+    status: 'aktivan'
+  };
+
+  if(SB_ONLINE){ await sbPost('klijenti', novi); }
+  novi.id = 'KL-'+(DATA.klijenti.length+1).toString().padStart(3,'0');
+  novi.upiti = 0;
+  DATA.klijenti.unshift(novi);
+  closeModal('modalKlijent');
+  showToast('✓ Klijent dodan!');
+  if(document.getElementById('view-klijenti').classList.contains('active'))renderKlijenti();
+}
 function savePonuda(){closeModal('modalPonuda');showToast('Ponuda kreirana!');}
 function saveUser(){closeModal('modalUser');showToast('Korisnik kreiran!');}
 function previewPonuda(){showToast('PDF preview — uskoro dostupno');}
