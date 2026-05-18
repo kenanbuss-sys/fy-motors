@@ -286,7 +286,51 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .empty-ico{font-size:2.5rem;display:block;margin-bottom:12px;opacity:.5}
 .empty-txt{font-family:var(--H);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase}
 
-/* RESPONSIVE */
+/* ═══ MOBILE NAV BOTTOM BAR ═══ */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--dark);border-top:1px solid var(--border);height:58px;grid-template-columns:repeat(5,1fr)}
+.mob-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:6px 4px;color:var(--muted);transition:color .15s;font-size:.48rem;font-family:var(--M);letter-spacing:.06em;text-transform:uppercase;border:none;background:none;width:100%}
+.mob-nav-item:hover,.mob-nav-item.active{color:var(--red)}
+.mob-nav-item .mn-ico{font-size:1.1rem;line-height:1}
+.mob-nav-more{position:fixed;bottom:58px;left:0;right:0;background:var(--dark);border-top:1px solid var(--border);padding:12px;z-index:199;display:none;grid-template-columns:repeat(3,1fr);gap:8px}
+.mob-nav-more.open{display:grid}
+.mob-more-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;background:var(--card);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-family:var(--M);font-size:.55rem;color:var(--mid);text-transform:uppercase;letter-spacing:.06em;transition:all .15s}
+.mob-more-item:hover{border-color:var(--red);color:var(--white)}
+.mob-more-item .mm-ico{font-size:1.3rem}
+
+/* Mobile topbar */
+.mob-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:300;background:var(--dark);border-bottom:1px solid var(--border);height:52px;align-items:center;padding:0 16px;gap:12px}
+.mob-page-title{font-family:var(--H);font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--white);flex:1}
+.mob-notif{width:36px;height:36px;background:var(--card);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:.9rem}
+.mob-notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:var(--red);border-radius:50%;border:1.5px solid var(--dark)}
+
+/* Mobile cards */
+.mob-stat-scroll{display:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:10px;padding:0 16px 0;margin-bottom:16px}
+.mob-stat-scroll::-webkit-scrollbar{display:none}
+.mob-stat-card{flex-shrink:0;width:150px;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px;position:relative;overflow:hidden}
+.mob-stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
+.mob-stat-card.s-red::after{background:var(--red)}
+.mob-stat-card.s-green::after{background:var(--green)}
+.mob-stat-card.s-orange::after{background:var(--orange)}
+.mob-stat-card.s-blue::after{background:var(--blue)}
+.mob-stat-label{font-family:var(--M);font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+.mob-stat-val{font-family:var(--H);font-size:1.6rem;font-weight:700;color:var(--white);line-height:1}
+.mob-stat-ico{position:absolute;top:10px;right:12px;font-size:1.1rem;opacity:.4}
+
+/* Mobile list items */
+.mob-list{display:flex;flex-direction:column;gap:8px}
+.mob-list-item{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px;cursor:pointer;transition:border-color .2s;active:border-color var(--red)}
+.mob-list-item:active{border-color:var(--red)}
+.mob-li-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.mob-li-name{font-weight:600;font-size:.88rem;color:var(--white)}
+.mob-li-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mob-li-sub{font-family:var(--M);font-size:.62rem;color:var(--mid)}
+.mob-li-price{font-family:var(--H);font-size:.95rem;color:var(--red);font-weight:700}
+
+/* Mobile FAB */
+.mob-fab{position:fixed;bottom:70px;right:16px;z-index:150;width:52px;height:52px;background:var(--red);border:none;border-radius:50%;color:#fff;font-size:1.5rem;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(204,28,28,.4);cursor:pointer;transition:transform .15s}
+.mob-fab:active{transform:scale(.92)}
+
+/* ═══ RESPONSIVE BREAKPOINTS ═══ */
 @media(max-width:1200px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .kanban{grid-template-columns:repeat(2,1fr)}
@@ -296,6 +340,40 @@ tr:hover td{background:rgba(255,255,255,.02)}
   .shell{grid-template-columns:1fr}
   .sidebar{display:none}
   .stats-grid{grid-template-columns:1fr 1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .f-row,.f-row-3{grid-template-columns:1fr}
+  .kanban{grid-template-columns:1fr 1fr}
+  .prod-grid-d{grid-template-columns:1fr 1fr}
+  .m-body{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  /* Hide desktop topbar, show mobile topbar */
+  .topbar{display:none}
+  .mob-topbar{display:flex}
+  /* Show mobile nav bottom bar */
+  .mob-nav{display:grid}
+  /* Show FAB */
+  .mob-fab{display:flex}
+  /* Main padding adjustments */
+  .main{padding:68px 12px 70px}
+  /* Stats — horizontal scroll */
+  .stats-grid{display:none}
+  .mob-stat-scroll{display:flex}
+  /* Kanban single column */
+  .kanban{grid-template-columns:1fr}
+  /* Products single column */
+  .prod-grid-d{grid-template-columns:1fr}
+  /* Tables — hide some columns */
+  .tbl-hide-mob{display:none}
+  /* Modal full screen */
+  .modal-bg{padding:0;align-items:flex-end}
+  .modal-box{max-height:92vh;border-radius:12px 12px 0 0;border-top:3px solid var(--red)}
+  /* Login page mobile */
+  .login-box{padding:24px;width:100%;max-width:100%}
+  #loginScreen{padding:20px}
+  /* Page header stack */
+  .page-header{flex-direction:column;align-items:flex-start;gap:12px}
+  .page-actions{width:100%;justify-content:flex-end}
 }
 </style>
 </head>
@@ -339,6 +417,58 @@ tr:hover td{background:rgba(255,255,255,.02)}
      APP
 ══════════════════════════════════════ -->
 <div id="app">
+
+<!-- MOBILE TOPBAR -->
+<div class="mob-topbar" id="mobTopbar">
+  <img src="" id="mobLogo" style="height:26px;width:auto;object-fit:contain;display:none">
+  <span class="mob-page-title" id="mobPageTitle">Dashboard</span>
+  <div class="mob-notif" onclick="toggleMobMore()">🔔<span class="mob-notif-dot"></span></div>
+  <div class="mob-notif" onclick="doLogout()" style="font-size:.7rem;font-family:var(--M)">↩</div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mob-nav" id="mobNav">
+  <button class="mob-nav-item active" onclick="mobGoView('dashboard',this,'Dashboard')">
+    <span class="mn-ico">📊</span>Home
+  </button>
+  <button class="mob-nav-item" onclick="mobGoView('upiti',this,'Upiti')">
+    <span class="mn-ico">📩</span>Upiti
+    <span id="mob-badge-upiti" style="position:absolute;top:6px;right:calc(50% - 18px);background:var(--red);color:#fff;font-size:.45rem;font-weight:700;padding:1px 4px;border-radius:8px;font-family:var(--M)"></span>
+  </button>
+  <button class="mob-nav-item" onclick="mobGoView('servis',this,'Servis')">
+    <span class="mn-ico">🔧</span>Servis
+    <span id="mob-badge-servis" style="position:absolute;top:6px;right:calc(50% - 16px);background:var(--green);color:#fff;font-size:.45rem;font-weight:700;padding:1px 4px;border-radius:8px;font-family:var(--M)"></span>
+  </button>
+  <button class="mob-nav-item" onclick="mobGoView('klijenti',this,'Klijenti')">
+    <span class="mn-ico">👥</span>CRM
+  </button>
+  <button class="mob-nav-item" onclick="toggleMobMore(this)">
+    <span class="mn-ico">⋯</span>Više
+  </button>
+</div>
+
+<!-- MOBILE MORE MENU -->
+<div class="mob-nav-more" id="mobNavMore">
+  <div class="mob-more-item" onclick="mobGoView('analitika',null,'Analitika');closeMobMore()"><span class="mm-ico">📈</span>Analitika</div>
+  <div class="mob-more-item" onclick="mobGoView('proizvodi',null,'Proizvodi');closeMobMore()"><span class="mm-ico">🏭</span>Proizvodi</div>
+  <div class="mob-more-item" onclick="mobGoView('ponude',null,'Ponude');closeMobMore()"><span class="mm-ico">📋</span>Ponude</div>
+  <div class="mob-more-item" onclick="mobGoView('kalendar',null,'Kalendar');closeMobMore()"><span class="mm-ico">📅</span>Kalendar</div>
+  <div class="mob-more-item" onclick="mobGoView('korisnici',null,'Korisnici');closeMobMore()"><span class="mm-ico">🔐</span>Korisnici</div>
+  <div class="mob-more-item" onclick="mobGoView('postavke',null,'Postavke');closeMobMore()"><span class="mm-ico">⚙️</span>Postavke</div>
+</div>
+
+<!-- MOBILE FAB -->
+<button class="mob-fab" id="mobFab" onclick="mobFabAction()">+</button>
+
+<!-- MOBILE STAT SCROLL (shown instead of grid on mobile) -->
+<div class="mob-stat-scroll" id="mobStatScroll" style="display:none">
+  <div class="mob-stat-card s-red"><div class="mob-stat-ico">📩</div><div class="mob-stat-label">Novi upiti</div><div class="mob-stat-val" id="mob-stat-upiti">–</div></div>
+  <div class="mob-stat-card s-green"><div class="mob-stat-ico">✅</div><div class="mob-stat-label">Prodaje</div><div class="mob-stat-val" id="mob-stat-prodaje">–</div></div>
+  <div class="mob-stat-card s-orange"><div class="mob-stat-ico">🔧</div><div class="mob-stat-label">Servis</div><div class="mob-stat-val" id="mob-stat-servis">–</div></div>
+  <div class="mob-stat-card s-blue"><div class="mob-stat-ico">💰</div><div class="mob-stat-label">Prihod MTD</div><div class="mob-stat-val" id="mob-stat-prihod">–</div></div>
+  <div class="mob-stat-card s-blue"><div class="mob-stat-ico">👥</div><div class="mob-stat-label">Klijenti</div><div class="mob-stat-val" id="mob-stat-klijenti">–</div></div>
+</div>
+
 <div class="shell">
 
 <!-- TOPBAR -->
@@ -1571,6 +1701,188 @@ function savePonuda(){closeModal('modalPonuda');showToast('Ponuda kreirana!');}
 function saveUser(){closeModal('modalUser');showToast('Korisnik kreiran!');}
 function previewPonuda(){showToast('PDF preview — uskoro dostupno');}
 function addPonudaItem(){showToast('Dodaj više stavki — uskoro');}
+
+// ══════════════════════════════════
+// MOBILE FUNCTIONS
+// ══════════════════════════════════
+var isMobile = window.innerWidth <= 640;
+var curMobView = 'dashboard';
+var mobMoreOpen = false;
+
+function mobGoView(v, btn, title){
+  goView(v);
+  curMobView = v;
+  // Update bottom nav active state
+  document.querySelectorAll('.mob-nav-item').forEach(function(el){el.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  // Update page title
+  var pt = document.getElementById('mobPageTitle');
+  if(pt) pt.textContent = title||v;
+  // Update FAB action based on view
+  updateMobFab(v);
+  closeMobMore();
+}
+
+function updateMobFab(v){
+  var fab = document.getElementById('mobFab');
+  if(!fab) return;
+  var fabMap = {
+    'upiti':'📩','klijenti':'👤','servis':'🔧','proizvodi':'📦',
+    'ponude':'📋','dashboard':'📩'
+  };
+  fab.textContent = fabMap[v] || '+';
+}
+
+function mobFabAction(){
+  var fabModals = {
+    'upiti':'modalUpit','klijenti':'modalKlijent',
+    'servis':'modalServis','proizvodi':'modalProd',
+    'ponude':'modalPonuda','dashboard':'modalUpit'
+  };
+  var modal = fabModals[curMobView] || 'modalUpit';
+  openModal(modal);
+}
+
+function toggleMobMore(btn){
+  mobMoreOpen = !mobMoreOpen;
+  var more = document.getElementById('mobNavMore');
+  if(more) more.classList.toggle('open', mobMoreOpen);
+  // Update more button active state
+  document.querySelectorAll('.mob-nav-item').forEach(function(el){
+    if(el.textContent.includes('Više')) el.classList.toggle('active', mobMoreOpen);
+  });
+}
+
+function closeMobMore(){
+  mobMoreOpen = false;
+  var more = document.getElementById('mobNavMore');
+  if(more) more.classList.remove('open');
+}
+
+function updateMobStats(){
+  if(window.innerWidth > 640) return;
+  var noviUpiti = DATA.upiti.filter(function(u){return u.status==='novi'}).length;
+  var prodaje = DATA.upiti.filter(function(u){return u.status==='zatvoren-win'}).length;
+  var servisAkt = DATA.servis.filter(function(s){return s.status==='nov'||s.status==='u-toku'}).length;
+  var prihod = DATA.upiti.filter(function(u){return u.status==='zatvoren-win'}).reduce(function(s,u){return s+u.vrijednost},0);
+
+  var el = document.getElementById('mob-stat-upiti');
+  if(el) el.textContent = noviUpiti;
+  el = document.getElementById('mob-stat-prodaje');
+  if(el) el.textContent = prodaje;
+  el = document.getElementById('mob-stat-servis');
+  if(el) el.textContent = servisAkt;
+  el = document.getElementById('mob-stat-prihod');
+  if(el) el.textContent = prihod > 1000 ? Math.round(prihod/1000)+'K' : prihod;
+  el = document.getElementById('mob-stat-klijenti');
+  if(el) el.textContent = DATA.klijenti.length;
+
+  // Mobile badges
+  el = document.getElementById('mob-badge-upiti');
+  if(el) el.textContent = noviUpiti || '';
+  el = document.getElementById('mob-badge-servis');
+  if(el) el.textContent = servisAkt || '';
+
+  // Show mob stat scroll
+  var scroll = document.getElementById('mobStatScroll');
+  if(scroll) scroll.style.display = 'flex';
+}
+
+// Mobile table — show only key columns
+function renderMobUpiti(){
+  if(window.innerWidth > 640) return;
+  var grid = document.getElementById('upitiKanban');
+  if(!grid) return;
+  // Replace kanban with simple mobile list on small screens
+  var container = document.getElementById('upitiKanban').parentElement;
+  var existingMobList = document.getElementById('mobUpitiList');
+  if(!existingMobList){
+    var div = document.createElement('div');
+    div.id = 'mobUpitiList';
+    div.className = 'mob-list';
+    container.insertBefore(div, grid);
+  }
+  var listEl = document.getElementById('mobUpitiList');
+  if(listEl){
+    listEl.innerHTML = DATA.upiti.map(function(u){
+      return '<div class="mob-list-item" onclick="openModal(this.dataset.modal)" data-modal="modalUpit">'
+        +'<div class="mob-li-top"><span class="mob-li-name">'+u.klijent+'</span>'+statusBadge(u.status)+'</div>'
+        +'<div class="mob-li-meta">'
+        +'<span class="mob-li-sub">'+u.masina.split(' ').slice(0,3).join(' ')+'</span>'
+        +'<span class="mob-li-price">'+fmt(u.vrijednost)+'</span>'
+        +'<span class="mob-li-sub">'+fmtDate(u.datum)+'</span>'
+        +'</div></div>';
+    }).join('');
+    grid.style.display = 'none';
+    document.getElementById('upitiTable') && (document.getElementById('upitiTable').style.display='none');
+  }
+}
+
+// Fix modal for mobile - make it scroll properly
+function fixMobModal(){
+  if(window.innerWidth > 640) return;
+  document.querySelectorAll('.modal-box').forEach(function(m){
+    m.style.borderRadius = '12px 12px 0 0';
+    m.style.width = '100%';
+    m.style.maxWidth = '100%';
+  });
+}
+
+// Hook into existing renderDashboard
+var _origRenderDashboard = renderDashboard;
+renderDashboard = function(){
+  _origRenderDashboard();
+  if(window.innerWidth <= 640){
+    updateMobStats();
+    // Copy logo to mobile topbar
+    var desktopLogo = document.querySelector('.topbar img');
+    var mobLogo = document.getElementById('mobLogo');
+    if(desktopLogo && mobLogo){
+      mobLogo.src = desktopLogo.src;
+      mobLogo.style.display = 'block';
+    }
+  }
+};
+
+// Hook into goView for mobile page title updates
+var _origGoView = goView;
+goView = function(v){
+  _origGoView(v);
+  if(window.innerWidth <= 640){
+    var titles = {
+      dashboard:'Dashboard',analitika:'Analitika',upiti:'Upiti',
+      proizvodi:'Proizvodi',ponude:'Ponude',servis:'Servis',
+      klijenti:'CRM',kalendar:'Kalendar',korisnici:'Korisnici',postavke:'Postavke'
+    };
+    var pt = document.getElementById('mobPageTitle');
+    if(pt) pt.textContent = titles[v]||v;
+    updateMobStats();
+    if(v==='upiti') setTimeout(renderMobUpiti, 100);
+    // Scroll to top
+    var main = document.querySelector('.main');
+    if(main) main.scrollTop = 0;
+  }
+};
+
+// Close more menu when tapping outside
+document.addEventListener('click', function(e){
+  if(mobMoreOpen && !e.target.closest('#mobNavMore') && !e.target.closest('.mob-nav-item')){
+    closeMobMore();
+  }
+});
+
+// Touch swipe to close more menu
+var touchStartY = 0;
+document.addEventListener('touchstart', function(e){ touchStartY = e.touches[0].clientY; });
+document.addEventListener('touchend', function(e){
+  if(e.changedTouches[0].clientY - touchStartY > 60) closeMobMore();
+});
+
+// Viewport resize handler
+window.addEventListener('resize', function(){
+  isMobile = window.innerWidth <= 640;
+  if(isMobile) updateMobStats();
+});
 </script>
 </body>
 </html>
