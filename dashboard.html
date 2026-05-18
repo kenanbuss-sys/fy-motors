@@ -323,6 +323,13 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <label class="login-label">Lozinka</label>
       <input class="login-input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password">
     </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.78rem;color:var(--mid)">
+        <input type="checkbox" id="rememberMe" style="accent-color:var(--red);width:14px;height:14px" checked>
+        Zapamti prijavu
+      </label>
+      <span style="font-family:var(--M);font-size:.65rem;color:var(--muted)">Ostaje prijavljen</span>
+    </div>
     <button class="login-btn" onclick="doLogin()">Prijava →</button>
     <div class="login-hint">// FY Motors Control Center v1.0</div>
   </div>
@@ -901,14 +908,33 @@ var upitiView = 'kanban';
 // LOGIN
 // ══════════════════════════════════
 function doLogin(){
-  var u=document.getElementById('loginUser').value;
+  var u=document.getElementById('loginUser').value.trim();
   var p=document.getElementById('loginPass').value;
-  var USERS={'admin':'FYmotors2026!','prodaja':'Prodaja2026!','servis':'Servis2026!'};if(USERS[u]&&USERS[u]===p){
+  var remember=document.getElementById('rememberMe').checked;
+  var USERS={'admin':'FYmotors2026!','prodaja':'Prodaja2026!','servis':'Servis2026!'};
+  if(USERS[u]&&USERS[u]===p){
+    // Save session
+    try {
+      if(remember){
+        localStorage.setItem('fy_session', JSON.stringify({user:u, ts:Date.now()}));
+        localStorage.setItem('fy_remember_user', u);
+      } else {
+        sessionStorage.setItem('fy_session', JSON.stringify({user:u, ts:Date.now()}));
+        localStorage.removeItem('fy_session');
+      }
+    } catch(e){}
     document.getElementById('loginScreen').style.opacity='0';
     setTimeout(function(){
       document.getElementById('loginScreen').style.display='none';
       document.getElementById('app').style.display='block';
       CUR_USER=u;
+      // Update topbar name
+      var av=document.querySelector('.tb-avatar');
+      var un=document.querySelector('.tb-uname');
+      var ur=document.querySelector('.tb-urole');
+      if(av)av.textContent=u.charAt(0).toUpperCase();
+      if(un)un.textContent=u.charAt(0).toUpperCase()+u.slice(1);
+      if(ur)ur.textContent=u==='admin'?'superadmin':u;
       initDashboard();
       applyPerms();
     },400);
@@ -921,12 +947,51 @@ function doLogin(){
 document.getElementById('loginPass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 document.getElementById('loginUser').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 
+// Auto-login on page load if session exists
+(function checkSession(){
+  try {
+    // Check localStorage (remember me) first, then sessionStorage
+    var raw = localStorage.getItem('fy_session') || sessionStorage.getItem('fy_session');
+    if(raw){
+      var sess = JSON.parse(raw);
+      var age = Date.now() - sess.ts;
+      var MAX_AGE = 30 * 24 * 60 * 60 * 1000; // 30 dana za remember me
+      if(age < MAX_AGE && sess.user){
+        CUR_USER = sess.user;
+        document.getElementById('loginScreen').style.display='none';
+        document.getElementById('app').style.display='block';
+        var av=document.querySelector('.tb-avatar');
+        var un=document.querySelector('.tb-uname');
+        var ur=document.querySelector('.tb-urole');
+        if(av)av.textContent=sess.user.charAt(0).toUpperCase();
+        if(un)un.textContent=sess.user.charAt(0).toUpperCase()+sess.user.slice(1);
+        if(ur)ur.textContent=sess.user==='admin'?'superadmin':sess.user;
+        initDashboard();
+        applyPerms();
+        return;
+      }
+    }
+    // Pre-fill username if remembered
+    var savedUser = localStorage.getItem('fy_remember_user');
+    if(savedUser){
+      document.getElementById('loginUser').value = savedUser;
+      document.getElementById('loginPass').focus();
+    }
+  } catch(e){}
+})();
+
 function doLogout(){
+  // Clear session
+  try {
+    localStorage.removeItem('fy_session');
+    sessionStorage.removeItem('fy_session');
+  } catch(e){}
   document.getElementById('app').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('loginScreen').style.opacity='1';
   document.getElementById('loginUser').value='';
   document.getElementById('loginPass').value='';
+  CUR_USER='';
 }
 
 // ══════════════════════════════════
