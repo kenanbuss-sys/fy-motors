@@ -745,7 +745,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
         </select>
       </div>
     </div>
-    <div class="stats-grid" id="statsGrid">
+    <div class="stats-grid" id="analyticsGrid">
       <div class="stat-card s-blue"><div class="stat-ico">👁️</div><div class="stat-label">Posjete (30d)</div><div class="stat-val">1,847</div><div class="stat-change"><span class="change-up">↑ +23%</span></div></div>
       <div class="stat-card s-red"><div class="stat-ico">🛒</div><div class="stat-label">Upiti s weba</div><div class="stat-val">34</div><div class="stat-change"><span class="change-up">↑ +8</span></div></div>
       <div class="stat-card s-green"><div class="stat-ico">📊</div><div class="stat-label">Konverzija</div><div class="stat-val">1<em>.8%</em></div><div class="stat-change"><span class="change-up">↑ +0.3%</span></div></div>
@@ -1360,13 +1360,31 @@ async function initDashboard(){
 }
 
 function renderDashboard(){
-  // Recent upiti
-  var tbody=document.getElementById('dashUpiti');
-  var rows=DATA.upiti.slice(0,5).map(function(u){
-    return '<tr><td style="font-family:var(--M);font-size:.68rem;color:var(--mid)">'+u.id+'</td><td>'+u.klijent+'</td><td style="font-size:.78rem;color:var(--mid)">'+u.masina+'</td><td style="font-family:var(--M);color:var(--red)">'+fmt(u.vrijednost)+'</td><td>'+statusBadge(u.status)+'</td><td style="font-family:var(--M);font-size:.68rem;color:var(--mid)">'+fmtDate(u.datum)+'</td><td><button class="btn btn-ghost" style="padding:5px 10px;font-size:.62rem" onclick="goView(\'upiti\')">→</button></td></tr>';
-  });
-  tbody.innerHTML=rows.join('');
-
+  // Recent upiti — mobile cards ili desktop tabela
+  var wrap = document.getElementById('dashUpitiWrap');
+  var recent = DATA.upiti.slice(0,5);
+  if(wrap){
+    if(window.innerWidth <= 640){
+      wrap.innerHTML = '<div style="margin-top:4px">' + recent.map(function(u){
+        return '<div style="padding:11px 0;border-bottom:1px solid rgba(255,255,255,.07)">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">'
+          +'<span style="font-weight:600;font-size:.86rem;color:#e8e4dc">'+u.klijent+'</span>'
+          +statusBadge(u.status)
+          +'</div>'
+          +'<div style="display:flex;gap:10px;flex-wrap:wrap">'
+          +'<span style="font-size:.73rem;color:#7a7570">'+u.masina.split(' ').slice(0,3).join(' ')+ '</span>'
+          +'<span style="font-family:var(--M);font-size:.8rem;color:#CC1C1C;font-weight:700">'+fmt(u.vrijednost)+'</span>'
+          +'<span style="font-family:var(--M);font-size:.63rem;color:#4a4540">'+fmtDate(u.datum)+'</span>'
+          +'</div></div>';
+      }).join('') + '</div>';
+    } else {
+      wrap.innerHTML = '<div class="tbl-wrap"><table><thead><tr><th>#</th><th>Klijent</th><th>Mašina</th><th>Vrijednost</th><th>Status</th><th>Datum</th><th></th></tr></thead><tbody>'
+        + recent.map(function(u){
+          return '<tr><td style="font-family:var(--M);font-size:.68rem;color:var(--mid)">'+u.id+'</td><td>'+u.klijent+'</td><td style="font-size:.78rem;color:var(--mid)">'+u.masina+'</td><td style="font-family:var(--M);color:var(--red)">'+fmt(u.vrijednost)+'</td><td>'+statusBadge(u.status)+'</td><td style="font-family:var(--M);font-size:.68rem;color:var(--mid)">'+fmtDate(u.datum)+'</td><td><button class="btn btn-ghost" style="padding:5px 10px;font-size:.62rem" onclick="goView(\'upiti\')">→</button></td></tr>';
+        }).join('')
+        + '</tbody></table></div>';
+    }
+  }
   // Bar chart
   var days=['Pon','Uto','Sri','Čet','Pet','Sub','Ned'];
   var vals=[3,5,2,7,4,1,2];
@@ -2062,11 +2080,17 @@ function mSetup(){
     if(logoSrc){ mLogo.src = logoSrc; mLogo.style.display = 'block'; }
   }
 
-  // 8. Sakrij desktop stat grid, prikaži mobile stat row
-  var sg = document.querySelector('.stats-grid');
+  // 8. Sakrij SAMO dashboard stats-grid, prikaži mobile stat row
+  var dashSg = document.getElementById('statsGrid');
   var sr = document.getElementById('mobStatRow');
-  if(sg) sg.style.display = 'none';
+  if(dashSg) dashSg.style.display = 'none';
   if(sr) sr.style.display = 'flex';
+  // Analytics grid - ostavi vidljiv ali prilagodi layout
+  var analSg = document.getElementById('analyticsGrid');
+  if(analSg){
+    analSg.style.gridTemplateColumns = '1fr 1fr';
+    analSg.style.gap = '8px';
+  }
 
   // 9. Fix page header — stack vertically
   document.querySelectorAll('.page-header').forEach(function(ph){
@@ -2121,6 +2145,27 @@ function mSetup(){
 
   // 17. Ažuriraj statistike
   mUpdateStats();
+
+  // 18. Tabele - horizontalni scroll
+  document.querySelectorAll('.tbl-wrap').forEach(function(t){
+    t.style.overflowX = 'auto';
+    t.style.webkitOverflowScrolling = 'touch';
+    t.style.display = 'block';
+    t.style.maxWidth = '100%';
+  });
+
+  // 19. Stat kartice u analitici - 2 kolone na mobilnom
+  var ag = document.getElementById('analyticsGrid');
+  if(ag){
+    ag.style.gridTemplateColumns = '1fr 1fr';
+    ag.style.gap = '8px';
+    ag.style.display = 'grid';
+  }
+
+  // 20. Bar chart - smanji visinu
+  document.querySelectorAll('.bar-chart').forEach(function(b){
+    b.style.height = '60px';
+  });
 }
 
 function mUpdateStats(){
