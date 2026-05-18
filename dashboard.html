@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px}
-body{background:#0d0d0d;color:#e8e4dc;font-family:'Open Sans',sans-serif;font-weight:400;overflow:hidden;height:100vh}
+body{background:#0d0d0d;color:#e8e4dc;font-family:'Open Sans',sans-serif;font-weight:400;overflow:hidden;height:100vh;min-height:100dvh}
 :root{
   --red:#CC1C1C;--red-h:#a81616;--red-dim:rgba(204,28,28,.12);
   --black:#0d0d0d;--dark:#141414;--card:#1a1a1a;--card2:#1f1f1f;
@@ -69,8 +69,8 @@ input,select,textarea{font-family:var(--B)}
 .login-hint{font-family:var(--M);font-size:.68rem;color:var(--muted);margin-top:16px;text-align:center}
 
 /* ══ APP SHELL ══ */
-#app{display:none;height:100vh;overflow:hidden}
-.shell{display:grid;grid-template-columns:240px 1fr;grid-template-rows:56px 1fr;height:100vh}
+#app{display:none;height:100vh;overflow:hidden;min-height:100dvh}
+.shell{display:grid;grid-template-columns:240px 1fr;grid-template-rows:56px 1fr;height:100vh;min-height:100dvh}
 
 /* TOPBAR */
 .topbar{
@@ -124,7 +124,7 @@ input,select,textarea{font-family:var(--B)}
 .nav-badge-g{background:var(--green)}
 
 /* MAIN */
-.main{overflow-y:auto;background:var(--black);padding:28px}
+.main{overflow-y:auto;background:var(--black);padding:28px;height:100%;box-sizing:border-box}
 
 /* PAGE SYSTEM */
 .view{display:none}.view.active{display:block}
@@ -355,7 +355,10 @@ tr:hover td{background:rgba(255,255,255,.02)}
   /* Show FAB */
   .mob-fab{display:flex}
   /* Main padding adjustments */
-  .main{padding:68px 12px 70px}
+  body{overflow:auto;height:auto}
+  #app{height:auto;overflow:visible;min-height:100dvh}
+  .shell{height:auto;min-height:calc(100dvh - 58px)}
+  .main{overflow-y:visible;height:auto;min-height:calc(100dvh - 52px - 58px);padding:68px 12px 80px}
   /* Stats — horizontal scroll */
   .stats-grid{display:none}
   .mob-stat-scroll{display:flex}
