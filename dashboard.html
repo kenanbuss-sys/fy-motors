@@ -780,6 +780,19 @@ tr:hover td{background:rgba(255,255,255,.02)}
   </div>
 </div>
 
+
+<!-- Modal: Permisije -->
+<div class="modal-bg" id="modalPerm">
+  <div class="modal-box" style="max-width:680px">
+    <div class="modal-hd"><span class="modal-title" id="permModalTitle">Permisije</span><button class="modal-x" onclick="closeModal('modalPerm')">✕</button></div>
+    <div class="modal-body" id="permModalBody"></div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalPerm')">Odustani</button>
+      <button class="btn btn-primary" onclick="savePerms()">💾 Sačuvaj permisije</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div id="toast" style="position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border2);border-left:3px solid var(--green);color:var(--white);padding:12px 20px;font-size:.8rem;font-family:var(--M);opacity:0;transform:translateY(12px);transition:all .3s;z-index:999;pointer-events:none;border-radius:2px;max-width:300px"></div>
 
@@ -856,7 +869,9 @@ function doLogin(){
     setTimeout(function(){
       document.getElementById('loginScreen').style.display='none';
       document.getElementById('app').style.display='block';
+      CUR_USER=u;
       initDashboard();
+      applyPerms();
     },400);
     document.getElementById('loginScreen').style.transition='opacity .4s';
   } else {
@@ -1160,19 +1175,120 @@ function renderKalendar(){
 }
 
 // ══════════════════════════════════
+// PERMISSION SYSTEM
+// ══════════════════════════════════
+var MODULI=[
+  {key:'dashboard',label:'Dashboard'},{key:'analitika',label:'Analitika'},
+  {key:'upiti',label:'Upiti & Narudžbe'},{key:'proizvodi',label:'Proizvodi'},
+  {key:'ponude',label:'Ponude'},{key:'servis',label:'Servisni zahtjevi'},
+  {key:'klijenti',label:'CRM — Klijenti'},{key:'kalendar',label:'Kalendar'},
+  {key:'korisnici',label:'Korisnici'},{key:'postavke',label:'Postavke'}
+];
+var PERMS={
+  admin:   {dashboard:'full',analitika:'full',upiti:'full',proizvodi:'full',ponude:'full',servis:'full',klijenti:'full',kalendar:'full',korisnici:'full',postavke:'full'},
+  prodaja: {dashboard:'full',analitika:'view',upiti:'full',proizvodi:'view',ponude:'full',servis:'none',klijenti:'full',kalendar:'full',korisnici:'none',postavke:'none'},
+  servis:  {dashboard:'full',analitika:'none',upiti:'none',proizvodi:'none',ponude:'none',servis:'full',klijenti:'view',kalendar:'full',korisnici:'none',postavke:'none'}
+};
+var CUR_USER='admin';
+var _editingUser=null;
+
+function hasPerm(m){var p=PERMS[CUR_USER];return p&&(p[m]==='full'||p[m]==='view');}
+function canEdit(m){var p=PERMS[CUR_USER];return p&&p[m]==='full';}
+
+function applyPerms(){
+  MODULI.forEach(function(m){
+    var el=document.querySelector('.nav-item[onclick*="''+m.key+''"]');
+    if(!el)return;
+    var perm=(PERMS[CUR_USER]||{})[m.key]||'none';
+    el.style.display=perm==='none'?'none':'flex';
+    var tag=el.querySelector('.perm-tag');
+    if(tag)tag.remove();
+    if(perm==='view'){
+      var t=document.createElement('span');
+      t.className='perm-tag';
+      t.style.cssText='font-family:var(--M);font-size:.5rem;color:var(--muted);margin-left:auto';
+      t.textContent='👁';
+      el.appendChild(t);
+    }
+  });
+}
+
+// ══════════════════════════════════
 // KORISNICI
 // ══════════════════════════════════
 function renderKorisnici(){
+  var isAdmin=CUR_USER==='admin';
   document.getElementById('usersTbl').innerHTML=DATA.users.map(function(u){
     var ltr=u.ime.charAt(0);
-    var rc=u.uloga==='superadmin'?'':'uloga==="prodaja"?"g":"b"';
-    return'<tr><td><div class="avatar sm">'+ltr+'</div></td><td><div style="font-weight:600;font-size:.84rem">'+u.ime+'</div><div style="font-family:var(--M);font-size:.6rem;color:var(--mid)">@'+u.username+'</div></td><td><span class="badge '+(u.uloga==='superadmin'?'badge-red':u.uloga==='prodaja'?'badge-green':'badge-blue')+'">'+u.uloga+'</span></td><td style="font-size:.78rem;color:var(--mid)">'+u.pristup+'</td><td style="font-family:var(--M);font-size:.68rem;color:var(--mid)">'+u.zadnja+'</td><td><button class="btn btn-ghost" style="padding:5px 10px;font-size:.62rem">Uredi</button></td></tr>';
+    var bc=u.uloga==='superadmin'?'badge-red':u.uloga==='prodaja'?'badge-green':'badge-blue';
+    var btn=isAdmin&&u.uloga!=='superadmin'
+      ?'<button class="btn btn-primary" style="padding:5px 10px;font-size:.62rem" onclick="openPermModal(''+u.username+'')">✏ Permisije</button>'
+      :(u.uloga==='superadmin'?'<span style="font-family:var(--M);font-size:.6rem;color:var(--muted)">puni pristup</span>':'');
+    return'<tr><td><div class="avatar sm">'+ltr+'</div></td>'
+      +'<td><div style="font-weight:600;font-size:.84rem">'+u.ime+'</div><div style="font-family:var(--M);font-size:.6rem;color:var(--mid)">@'+u.username+'</div></td>'
+      +'<td><span class="badge '+bc+'">'+u.uloga+'</span></td>'
+      +'<td style="font-size:.78rem;color:var(--mid)">'+u.pristup+'</td>'
+      +'<td style="font-family:var(--M);font-size:.68rem;color:var(--mid)">'+u.zadnja+'</td>'
+      +'<td>'+btn+'</td></tr>';
   }).join('');
-  document.getElementById('permTable').innerHTML='<table><thead><tr><th>Modul</th><th>Admin</th><th>Prodaja</th><th>Servis</th><th>Pregled</th></tr></thead><tbody>'+
-  [['Dashboard','✓','✓','✓','✓'],['Upiti','✓','✓','–','👁'],['Proizvodi','✓','✓','–','👁'],['Servis','✓','–','✓','👁'],['CRM','✓','✓','–','–'],['Ponude','✓','✓','–','–'],['Korisnici','✓','–','–','–'],['Postavke','✓','–','–','–']].map(function(r){
-    return'<tr>'+r.map(function(c,i){return'<td style="'+(i===0?'font-weight:600':'text-align:center;font-family:var(--M);color:'+(c==='✓'?'var(--green)':c==='–'?'var(--muted)':'var(--blue)'))+';font-size:.8rem">'+c+'</td>'}).join('')+'</tr>';
-  }).join('')+'</tbody></table>';
+
+  document.getElementById('permTable').innerHTML=
+    '<div style="margin-bottom:12px;font-family:var(--M);font-size:.62rem;color:var(--mid)">Klikni "Permisije" pored korisnika za editovanje</div>'
+    +'<table style="width:100%;border-collapse:collapse"><thead><tr>'
+    +'<th style="text-align:left;padding:8px 0;font-family:var(--M);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)">Modul</th>'
+    +'<th style="text-align:center;font-family:var(--M);font-size:.6rem;color:var(--mid)">Admin</th>'
+    +'<th style="text-align:center;font-family:var(--M);font-size:.6rem;color:var(--mid)">Prodaja</th>'
+    +'<th style="text-align:center;font-family:var(--M);font-size:.6rem;color:var(--mid)">Servis</th>'
+    +'</tr></thead><tbody>'
+    +MODULI.map(function(m){
+      function ico(u){var p=(PERMS[u]||{})[m.key]||'none';return p==='full'?'<span style="color:var(--green);font-size:.75rem">✓ full</span>':p==='view'?'<span style="color:var(--blue);font-size:.72rem">👁 view</span>':'<span style="color:var(--muted);font-size:.75rem">–</span>';}
+      return'<tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 0;font-weight:600;font-size:.8rem">'+m.label+'</td>'
+        +'<td style="text-align:center">'+ico('admin')+'</td>'
+        +'<td style="text-align:center">'+ico('prodaja')+'</td>'
+        +'<td style="text-align:center">'+ico('servis')+'</td></tr>';
+    }).join('')
+    +'</tbody></table>';
 }
+
+function openPermModal(username){
+  _editingUser=username;
+  var u=DATA.users.filter(function(x){return x.username===username})[0];
+  var perms=PERMS[username]||{};
+  var rows=MODULI.map(function(m){
+    var val=perms[m.key]||'none';
+    return'<tr style="border-bottom:1px solid var(--border)">'
+      +'<td style="padding:11px 0;font-size:.84rem;font-weight:600;width:160px">'+m.label+'</td>'
+      +'<td style="padding:11px 0">'
+      +'<div style="display:flex;gap:16px">'
+      +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem"><input type="radio" name="perm_'+m.key+'" value="full" '+(val==='full'?'checked':'')+' style="accent-color:var(--green);width:14px;height:14px"> <span style="color:var(--green)">✓ Puni pristup</span></label>'
+      +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem"><input type="radio" name="perm_'+m.key+'" value="view" '+(val==='view'?'checked':'')+' style="accent-color:var(--blue);width:14px;height:14px"> <span style="color:var(--blue)">👁 Samo pregled</span></label>'
+      +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem"><input type="radio" name="perm_'+m.key+'" value="none" '+(val==='none'?'checked':'')+' style="accent-color:var(--red);width:14px;height:14px"> <span style="color:var(--muted)">– Skriveno</span></label>'
+      +'</div></td></tr>';
+  }).join('');
+  document.getElementById('permModalTitle').textContent='Permisije — @'+username+' ('+u.uloga+')';
+  document.getElementById('permModalBody').innerHTML=
+    '<div style="background:var(--card2);padding:12px 16px;margin-bottom:20px;border-left:3px solid var(--red);font-size:.8rem;color:var(--mid)">Promjene se primjenjuju odmah pri sljedećoj prijavi korisnika.</div>'
+    +'<table style="width:100%;border-collapse:collapse"><thead><tr>'
+    +'<th style="text-align:left;padding:8px 0;font-family:var(--M);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)">Modul</th>'
+    +'<th style="padding:8px 0;font-family:var(--M);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)">Nivo pristupa</th>'
+    +'</tr></thead><tbody>'+rows+'</tbody></table>';
+  document.getElementById('modalPerm').classList.add('open');
+}
+
+function savePerms(){
+  if(!_editingUser)return;
+  var np={};
+  MODULI.forEach(function(m){
+    var rs=document.querySelectorAll('input[name="perm_'+m.key+'"]');
+    rs.forEach(function(r){if(r.checked)np[m.key]=r.value;});
+  });
+  PERMS[_editingUser]=np;
+  document.getElementById('modalPerm').classList.remove('open');
+  showToast('Permisije sačuvane za @'+_editingUser+'!');
+  renderKorisnici();
+  if(CUR_USER===_editingUser)applyPerms();
+}
+
 
 // ══════════════════════════════════
 // POSTAVKE
