@@ -456,6 +456,42 @@ tr:hover td{background:rgba(255,255,255,.02)}
   /* Bar chart */
   .bar-chart{height:60px}
 }
+
+/* ═══ MOBILE ONLY STYLES ═══ */
+.mob-topbar{display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#141414;border-bottom:1px solid rgba(255,255,255,.07);height:52px;align-items:center;padding:0 16px;gap:12px}
+.mob-page-title{font-family:'Oswald',sans-serif;font-size:.95rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#e8e4dc;flex:1}
+.mob-notif-btn{width:36px;height:36px;background:#1a1a1a;border:1px solid rgba(255,255,255,.07);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;flex-shrink:0;position:relative}
+.mob-nd{position:absolute;top:5px;right:5px;width:6px;height:6px;background:#CC1C1C;border-radius:50%;border:1.5px solid #141414}
+.mob-logout-btn{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:rgba(255,255,255,.5);background:none;border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:3px;cursor:pointer;flex-shrink:0}
+
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#141414;border-top:1px solid rgba(255,255,255,.07);height:60px}
+.mob-nav-inner{display:grid;grid-template-columns:repeat(5,1fr);height:100%}
+.mob-nav-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;background:none;border:none;color:rgba(122,117,112,.8);padding:6px 2px;transition:color .15s;position:relative;width:100%}
+.mob-nav-btn.on{color:#CC1C1C}
+.mob-nav-btn .mni{font-size:1.15rem;line-height:1}
+.mob-nav-btn .mnl{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase}
+.mob-nb{position:absolute;top:5px;right:calc(50% - 18px);background:#CC1C1C;color:#fff;font-size:.42rem;font-weight:700;padding:1px 4px;border-radius:8px;font-family:'JetBrains Mono',monospace;min-width:14px;text-align:center}
+.mob-nb-g{background:#2eb87a}
+
+.mob-more{display:none;position:fixed;bottom:60px;left:0;right:0;z-index:9998;background:#141414;border-top:1px solid rgba(255,255,255,.07);padding:12px;grid-template-columns:repeat(3,1fr);gap:8px}
+.mob-more.open{display:grid}
+.mob-more-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:#1a1a1a;border:1px solid rgba(255,255,255,.07);border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:.55rem;color:rgba(122,117,112,.8);text-transform:uppercase;letter-spacing:.06em;transition:all .15s}
+.mob-more-btn:hover,.mob-more-btn:active{border-color:#CC1C1C;color:#e8e4dc}
+.mob-more-ico{font-size:1.3rem}
+
+.mob-fab{display:none;position:fixed;bottom:72px;right:16px;z-index:9990;width:52px;height:52px;background:#CC1C1C;border:none;border-radius:50%;color:#fff;font-size:1.6rem;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(204,28,28,.5);cursor:pointer;line-height:1}
+.mob-fab:active{transform:scale(.92)}
+
+.mob-stat-row{display:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:10px;padding:0 0 4px;margin-bottom:14px}
+.mob-stat-row::-webkit-scrollbar{display:none}
+.mob-sc{flex-shrink:0;width:140px;background:#1a1a1a;border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:14px 12px;position:relative}
+.mob-sc-l{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(122,117,112,.8);margin-bottom:8px}
+.mob-sc-v{font-family:'Oswald',sans-serif;font-size:1.7rem;font-weight:700;color:#e8e4dc;line-height:1}
+.mob-sc-i{position:absolute;top:10px;right:10px;font-size:1.1rem;opacity:.4}
+.mob-sc.r{border-bottom:2px solid #CC1C1C}
+.mob-sc.g{border-bottom:2px solid #2eb87a}
+.mob-sc.o{border-bottom:2px solid #e07b2a}
+.mob-sc.b{border-bottom:2px solid #2a7be0}
 </style>
 </head>
 <body>
@@ -1134,7 +1170,6 @@ function doLogin(){
       document.getElementById('loginScreen').style.display='none';
       document.getElementById('app').style.display='block';
       CUR_USER=u;
-      setTimeout(function(){if(window.innerWidth<=640)updateMobStats();},600);
       // Update topbar name
       var av=document.querySelector('.tb-avatar');
       var un=document.querySelector('.tb-uname');
@@ -1972,6 +2007,192 @@ window.addEventListener('resize', function(){
   isMobile = window.innerWidth <= 640;
   if(isMobile) updateMobStats();
 });
+
+// ═══════════════════════════════════════
+// MOBILE — čista implementacija
+// ═══════════════════════════════════════
+var IS_MOB = window.innerWidth <= 640;
+var M_CUR_VIEW = 'dashboard';
+var M_MORE_OPEN = false;
+
+function mSetup(){
+  if(!IS_MOB) return;
+
+  // 1. body/html — omogući scroll
+  document.documentElement.style.overflow = 'auto';
+  document.documentElement.style.height = 'auto';
+  document.body.style.overflow = 'auto';
+  document.body.style.height = 'auto';
+  document.body.style.touchAction = 'pan-y';
+
+  // 2. #app — omogući scroll
+  var app = document.getElementById('app');
+  if(app){ app.style.overflow = 'auto'; app.style.height = 'auto'; }
+
+  // 3. .shell — block layout
+  var shell = document.querySelector('.shell');
+  if(shell){ shell.style.display = 'block'; shell.style.height = 'auto'; shell.style.overflow = 'visible'; }
+
+  // 4. .main — puni padding
+  var main = document.querySelector('.main');
+  if(main){ main.style.overflow = 'visible'; main.style.height = 'auto'; main.style.padding = '60px 12px 80px'; main.style.maxWidth = '100vw'; main.style.boxSizing = 'border-box'; }
+
+  // 5. Sakrij desktop topbar i sidebar
+  var topbar = document.querySelector('.topbar');
+  var sidebar = document.querySelector('.sidebar');
+  if(topbar) topbar.style.display = 'none';
+  if(sidebar) sidebar.style.display = 'none';
+
+  // 6. Prikaži mobile elemente
+  var mt = document.getElementById('mobTopbar');
+  var mn = document.getElementById('mobNav');
+  var mf = document.getElementById('mobFab');
+  if(mt) mt.style.display = 'flex';
+  if(mn) mn.style.display = 'block';
+  if(mf) mf.style.display = 'flex';
+
+  // 7. Kopiraj logo
+  var dLogo = document.querySelector('.topbar img, .tb-badge');
+  var mLogo = document.getElementById('mobLogoImg');
+  if(mLogo){
+    var logoSrc = '';
+    document.querySelectorAll('img').forEach(function(img){
+      if(img.src && img.src.indexOf('data:image') === 0 && !logoSrc) logoSrc = img.src;
+    });
+    if(logoSrc){ mLogo.src = logoSrc; mLogo.style.display = 'block'; }
+  }
+
+  // 8. Sakrij desktop stat grid, prikaži mobile stat row
+  var sg = document.querySelector('.stats-grid');
+  var sr = document.getElementById('mobStatRow');
+  if(sg) sg.style.display = 'none';
+  if(sr) sr.style.display = 'flex';
+
+  // 9. Fix page header — stack vertically
+  document.querySelectorAll('.page-header').forEach(function(ph){
+    ph.style.flexDirection = 'column';
+    ph.style.alignItems = 'flex-start';
+    ph.style.gap = '10px';
+    ph.style.marginBottom = '14px';
+  });
+
+  // 10. Fix page title size
+  document.querySelectorAll('.page-title').forEach(function(pt){
+    pt.style.fontSize = '1.2rem';
+  });
+
+  // 11. Fix action buttons
+  document.querySelectorAll('.page-actions').forEach(function(pa){
+    pa.style.width = '100%';
+    pa.style.display = 'flex';
+    pa.style.gap = '8px';
+  });
+
+  // 12. Fix grids
+  document.querySelectorAll('.grid-2,.grid-3,.grid-main-side').forEach(function(g){
+    g.style.gridTemplateColumns = '1fr';
+    g.style.gap = '10px';
+  });
+
+  // 13. Fix form rows
+  document.querySelectorAll('.f-row,.f-row-3').forEach(function(r){
+    r.style.gridTemplateColumns = '1fr';
+  });
+
+  // 14. Fix kanban
+  var kanban = document.querySelector('.kanban');
+  if(kanban) kanban.style.gridTemplateColumns = '1fr';
+
+  // 15. Fix product grid
+  var pg = document.querySelector('.prod-grid-d');
+  if(pg) pg.style.gridTemplateColumns = '1fr 1fr';
+
+  // 16. Fix modal for mobile
+  document.querySelectorAll('.modal-bg').forEach(function(mb){
+    mb.style.alignItems = 'flex-end';
+    mb.style.padding = '0';
+  });
+  document.querySelectorAll('.modal-box').forEach(function(mb){
+    mb.style.maxHeight = '88vh';
+    mb.style.borderRadius = '12px 12px 0 0';
+    mb.style.width = '100%';
+    mb.style.maxWidth = '100%';
+  });
+
+  // 17. Ažuriraj statistike
+  mUpdateStats();
+}
+
+function mUpdateStats(){
+  if(!IS_MOB) return;
+  var nu = DATA.upiti.filter(function(u){return u.status==='novi';}).length;
+  var np = DATA.upiti.filter(function(u){return u.status==='zatvoren-win';}).length;
+  var ns = DATA.servis.filter(function(s){return s.status==='nov'||s.status==='u-toku';}).length;
+  var pr = DATA.upiti.filter(function(u){return u.status==='zatvoren-win';}).reduce(function(s,u){return s+u.vrijednost;},0);
+  var nk = DATA.klijenti.length;
+
+  var e1=document.getElementById('ms1'); if(e1) e1.textContent=nu;
+  var e2=document.getElementById('ms2'); if(e2) e2.textContent=np;
+  var e3=document.getElementById('ms3'); if(e3) e3.textContent=ns;
+  var e4=document.getElementById('ms4'); if(e4) e4.textContent=pr>1000?Math.round(pr/1000)+'K':pr;
+  var e5=document.getElementById('ms5'); if(e5) e5.textContent=nk;
+
+  // Badges
+  var b1=document.getElementById('mnbu'); if(b1) b1.textContent=nu||'';
+  var b2=document.getElementById('mnbs'); if(b2) b2.textContent=ns||'';
+
+  // Sidebar badges
+  var sb1=document.getElementById('badge-upiti'); if(sb1) sb1.textContent=nu;
+  var sb2=document.getElementById('badge-servis'); if(sb2) sb2.textContent=ns;
+}
+
+function mNav(view, title, btn){
+  goView(view);
+  M_CUR_VIEW = view;
+  var pt = document.getElementById('mobPageTitle');
+  if(pt) pt.textContent = title||view;
+  document.querySelectorAll('.mob-nav-btn').forEach(function(b){ b.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
+  // FAB
+  var fabMap = {dashboard:'📩',upiti:'📩',klijenti:'👤',servis:'🔧',proizvodi:'📦',ponude:'📋'};
+  var fab = document.getElementById('mobFab');
+  if(fab) fab.textContent = fabMap[view]||'+';
+  // Re-apply layout fixes after view change
+  setTimeout(mSetup, 50);
+}
+
+function mNavMore(btn){
+  M_MORE_OPEN = !M_MORE_OPEN;
+  var more = document.getElementById('mobMore');
+  if(more) more.classList.toggle('open', M_MORE_OPEN);
+  if(btn) btn.classList.toggle('on', M_MORE_OPEN);
+}
+
+function mCloseMore(){
+  M_MORE_OPEN = false;
+  var more = document.getElementById('mobMore');
+  if(more) more.classList.remove('open');
+  document.getElementById('mnMore') && document.getElementById('mnMore').classList.remove('on');
+}
+
+function mFab(){
+  var map={dashboard:'modalUpit',upiti:'modalUpit',klijenti:'modalKlijent',servis:'modalServis',proizvodi:'modalProd',ponude:'modalPonuda'};
+  openModal(map[M_CUR_VIEW]||'modalUpit');
+}
+
+// Pokreni mSetup kada je app vidljiv
+var _origInitDashboard = initDashboard;
+initDashboard = async function(){
+  await _origInitDashboard();
+  if(IS_MOB){ setTimeout(mSetup, 100); setTimeout(mUpdateStats, 200); }
+};
+
+// Pokreni odmah ako je mobilni
+window.addEventListener('resize', function(){ IS_MOB = window.innerWidth<=640; if(IS_MOB) mSetup(); });
+document.addEventListener('click', function(e){
+  if(M_MORE_OPEN && !e.target.closest('#mobMore') && !e.target.closest('#mnMore')) mCloseMore();
+});
+
 </script>
 </body>
 </html>
