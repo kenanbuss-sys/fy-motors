@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://fymotors.ba/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1

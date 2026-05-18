@@ -1,0 +1,29 @@
+{
+  "rewrites": [
+    { "source": "/admin", "destination": "/dashboard.html" },
+    { "source": "/admin/", "destination": "/dashboard.html" }
+  ],
+  "headers": [
+    {
+      "source": "/dashboard.html",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml" }
+      ]
+    }
+  ]
+}
