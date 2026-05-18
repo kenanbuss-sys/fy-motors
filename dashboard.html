@@ -347,36 +347,104 @@ tr:hover td{background:rgba(255,255,255,.02)}
   .m-body{grid-template-columns:1fr}
 }
 @media(max-width:640px){
-  /* Hide desktop topbar, show mobile topbar */
+  /* Core layout */
+  body{overflow:auto;height:auto;overflow-x:hidden}
+  #app{height:auto;overflow:visible;overflow-x:hidden;min-height:100dvh}
+  .shell{height:auto;grid-template-columns:1fr;grid-template-rows:auto}
   .topbar{display:none}
+  .sidebar{display:none}
+
+  /* Mobile topbar */
   .mob-topbar{display:flex}
-  /* Show mobile nav bottom bar */
+
+  /* Main area — full width, proper padding */
+  .main{
+    overflow-y:visible;overflow-x:hidden;
+    height:auto;
+    min-height:calc(100dvh - 52px - 58px);
+    padding:64px 12px 80px;
+    width:100%;
+    box-sizing:border-box;
+    max-width:100vw;
+  }
+
+  /* Bottom nav */
   .mob-nav{display:grid}
-  /* Show FAB */
   .mob-fab{display:flex}
-  /* Main padding adjustments */
-  body{overflow:auto;height:auto}
-  #app{height:auto;overflow:visible;min-height:100dvh}
-  .shell{height:auto;min-height:calc(100dvh - 58px)}
-  .main{overflow-y:visible;height:auto;min-height:calc(100dvh - 52px - 58px);padding:68px 12px 80px}
-  /* Stats — horizontal scroll */
+
+  /* Page header */
+  .page-header{
+    flex-direction:column;align-items:flex-start;gap:10px;
+    margin-bottom:16px;
+  }
+  .page-title{font-size:1.3rem}
+  .page-sub{font-size:.65rem}
+  .page-actions{width:100%;display:flex;gap:8px;flex-wrap:wrap}
+  .page-actions .btn{flex:1;justify-content:center;font-size:.65rem;padding:8px 10px}
+
+  /* Stats — hide grid, show scroll */
   .stats-grid{display:none}
   .mob-stat-scroll{display:flex}
-  /* Kanban single column */
-  .kanban{grid-template-columns:1fr}
-  /* Products single column */
-  .prod-grid-d{grid-template-columns:1fr}
-  /* Tables — hide some columns */
-  .tbl-hide-mob{display:none}
-  /* Modal full screen */
+
+  /* Cards */
+  .card{padding:14px;border-radius:4px}
+  .card-title{font-size:.65rem;margin-bottom:10px}
+
+  /* Tables — mobile friendly */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;max-width:calc(100vw - 24px)}
+  table{min-width:100%;font-size:.75rem}
+  th{font-size:.55rem;padding:8px 8px;white-space:nowrap}
+  td{padding:10px 8px;font-size:.78rem}
+  /* Hide less important columns on mobile */
+  table th:nth-child(1),table td:nth-child(1){display:none} /* ID column */
+  table th:last-child,table td:last-child{white-space:nowrap}
+
+  /* Kanban */
+  .kanban{grid-template-columns:1fr;gap:10px}
+  .kb-col{border-radius:4px}
+
+  /* Products */
+  .prod-grid-d{grid-template-columns:1fr 1fr;gap:8px}
+  .prod-card-img{height:100px}
+  .prod-card-body{padding:10px}
+  .prod-card-name{font-size:.82rem}
+  .prod-card-price{font-size:1rem}
+
+  /* Grid layouts */
+  .grid-2,.grid-3,.grid-main-side{grid-template-columns:1fr;gap:12px}
+  .f-row,.f-row-3{grid-template-columns:1fr;gap:10px}
+
+  /* Modals — slide up from bottom */
   .modal-bg{padding:0;align-items:flex-end}
-  .modal-box{max-height:92vh;border-radius:12px 12px 0 0;border-top:3px solid var(--red)}
-  /* Login page mobile */
-  .login-box{padding:24px;width:100%;max-width:100%}
-  #loginScreen{padding:20px}
-  /* Page header stack */
-  .page-header{flex-direction:column;align-items:flex-start;gap:12px}
-  .page-actions{width:100%;justify-content:flex-end}
+  .modal-box{
+    max-height:90vh;border-radius:12px 12px 0 0;
+    border-top:3px solid var(--red);
+    width:100%;max-width:100%;
+  }
+  .modal-hd{padding:16px 18px 14px}
+  .modal-body{padding:16px 18px}
+  .modal-foot{padding:12px 18px;flex-wrap:wrap;gap:8px}
+  .modal-foot .btn{flex:1}
+
+  /* Login */
+  #loginScreen{padding:16px;align-items:flex-start;padding-top:60px}
+  .login-box{width:100%;max-width:100%}
+  .login-title{font-size:2.2rem}
+
+  /* Badges */
+  .badge{font-size:.55rem;padding:2px 6px}
+
+  /* Permission table */
+  #permTable table th:nth-child(1),
+  #permTable table td:nth-child(1){display:table-cell}
+
+  /* Tabs */
+  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex-shrink:0;padding:10px 12px;font-size:.65rem}
+
+  /* Settings */
+  #settingsContent .card{padding:14px}
 }
 </style>
 </head>
@@ -591,17 +659,12 @@ tr:hover td{background:rgba(255,255,255,.02)}
       </div>
     </div>
 
-    <div class="grid-main-side">
+    <div class="grid-main-side" style="align-items:start">
       <div style="display:flex;flex-direction:column;gap:16px">
         <!-- Recent inquiries -->
         <div class="card">
           <div class="card-title">Posljednji upiti</div>
-          <div class="tbl-wrap">
-            <table>
-              <thead><tr><th>#</th><th>Klijent</th><th>Mašina</th><th>Vrijednost</th><th>Status</th><th>Datum</th><th></th></tr></thead>
-              <tbody id="dashUpiti"></tbody>
-            </table>
-          </div>
+          <div id="dashUpitiWrap"></div>
         </div>
         <!-- Bar chart -->
         <div class="card">
