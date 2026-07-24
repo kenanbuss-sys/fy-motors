@@ -492,6 +492,12 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .mob-sc.g{border-bottom:2px solid #2eb87a}
 .mob-sc.o{border-bottom:2px solid #e07b2a}
 .mob-sc.b{border-bottom:2px solid #2a7be0}
+
+/* — inline ikone — */
+.ic{display:inline-block;vertical-align:-.16em;flex:0 0 auto;stroke:currentColor}
+.ti-ico .ic,.wc-ico .ic,.sv-ico .ic,.fi-ico .ic{width:26px;height:26px;stroke-width:1.5}
+.cart-ei .ic{width:30px;height:30px;stroke-width:1.4;opacity:.5}
+.hero-eyebrow .ic,.fc-badge .ic{width:13px;height:13px;vertical-align:-.12em}
 </style>
 </head>
 <body>
@@ -534,25 +540,25 @@ tr:hover td{background:rgba(255,255,255,.02)}
 <div class="mob-topbar" id="mobTopbar">
   <img src="" id="mobLogo" style="height:26px;width:auto;object-fit:contain;display:none">
   <span class="mob-page-title" id="mobPageTitle">Dashboard</span>
-  <div class="mob-notif" onclick="toggleMobMore()">🔔<span class="mob-notif-dot"></span></div>
-  <div class="mob-notif" onclick="doLogout()" style="font-size:.7rem;font-family:var(--M)">↩</div>
+  <div class="mob-notif" onclick="toggleMobMore()"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> <span class="mob-notif-dot"></span></div>
+  <div class="mob-notif" onclick="doLogout()" style="font-size:.7rem;font-family:var(--M)"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg> </div>
 </div>
 
 <!-- MOBILE BOTTOM NAV -->
 <div class="mob-nav" id="mobNav">
   <button class="mob-nav-item active" onclick="mobGoView('dashboard',this,'Dashboard')">
-    <span class="mn-ico">📊</span>Home
+    <span class="mn-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg> </span>Home
   </button>
   <button class="mob-nav-item" onclick="mobGoView('upiti',this,'Upiti')">
-    <span class="mn-ico">📩</span>Upiti
+    <span class="mn-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> </span>Upiti
     <span id="mob-badge-upiti" style="position:absolute;top:6px;right:calc(50% - 18px);background:var(--red);color:#fff;font-size:.45rem;font-weight:700;padding:1px 4px;border-radius:8px;font-family:var(--M)"></span>
   </button>
   <button class="mob-nav-item" onclick="mobGoView('servis',this,'Servis')">
-    <span class="mn-ico">🔧</span>Servis
+    <span class="mn-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.8 2.8 0 0 1-4-4l9-9z"/><path d="M17.5 3.5a4 4 0 0 1 3 3"/></svg> </span>Servis
     <span id="mob-badge-servis" style="position:absolute;top:6px;right:calc(50% - 16px);background:var(--green);color:#fff;font-size:.45rem;font-weight:700;padding:1px 4px;border-radius:8px;font-family:var(--M)"></span>
   </button>
   <button class="mob-nav-item" onclick="mobGoView('klijenti',this,'Klijenti')">
-    <span class="mn-ico">👥</span>CRM
+    <span class="mn-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg> </span>CRM
   </button>
   <button class="mob-nav-item" onclick="toggleMobMore(this)">
     <span class="mn-ico">⋯</span>Više
@@ -561,12 +567,12 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
 <!-- MOBILE MORE MENU -->
 <div class="mob-nav-more" id="mobNavMore">
-  <div class="mob-more-item" onclick="mobGoView('analitika',null,'Analitika');closeMobMore()"><span class="mm-ico">📈</span>Analitika</div>
-  <div class="mob-more-item" onclick="mobGoView('proizvodi',null,'Proizvodi');closeMobMore()"><span class="mm-ico">🏭</span>Proizvodi</div>
-  <div class="mob-more-item" onclick="mobGoView('ponude',null,'Ponude');closeMobMore()"><span class="mm-ico">📋</span>Ponude</div>
-  <div class="mob-more-item" onclick="mobGoView('kalendar',null,'Kalendar');closeMobMore()"><span class="mm-ico">📅</span>Kalendar</div>
-  <div class="mob-more-item" onclick="mobGoView('korisnici',null,'Korisnici');closeMobMore()"><span class="mm-ico">🔐</span>Korisnici</div>
-  <div class="mob-more-item" onclick="mobGoView('postavke',null,'Postavke');closeMobMore()"><span class="mm-ico">⚙️</span>Postavke</div>
+  <div class="mob-more-item" onclick="mobGoView('analitika',null,'Analitika');closeMobMore()"><span class="mm-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg> </span>Analitika</div>
+  <div class="mob-more-item" onclick="mobGoView('proizvodi',null,'Proizvodi');closeMobMore()"><span class="mm-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h20V9l-6 4V9l-6 4V4H4a2 2 0 0 0-2 2v14z"/><path d="M6 20v-4h4v4"/></svg> </span>Proizvodi</div>
+  <div class="mob-more-item" onclick="mobGoView('ponude',null,'Ponude');closeMobMore()"><span class="mm-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg> </span>Ponude</div>
+  <div class="mob-more-item" onclick="mobGoView('kalendar',null,'Kalendar');closeMobMore()"><span class="mm-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> </span>Kalendar</div>
+  <div class="mob-more-item" onclick="mobGoView('korisnici',null,'Korisnici');closeMobMore()"><span class="mm-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> </span>Korisnici</div>
+  <div class="mob-more-item" onclick="mobGoView('postavke',null,'Postavke');closeMobMore()"><span class="mm-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg> </span>Postavke</div>
 </div>
 
 <!-- MOBILE FAB -->
@@ -574,11 +580,11 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
 <!-- MOBILE STAT SCROLL (shown instead of grid on mobile) -->
 <div class="mob-stat-scroll" id="mobStatScroll">
-  <div class="mob-stat-card s-red"><div class="mob-stat-ico">📩</div><div class="mob-stat-label">Novi upiti</div><div class="mob-stat-val" id="mob-stat-upiti">–</div></div>
-  <div class="mob-stat-card s-green"><div class="mob-stat-ico">✅</div><div class="mob-stat-label">Prodaje</div><div class="mob-stat-val" id="mob-stat-prodaje">–</div></div>
-  <div class="mob-stat-card s-orange"><div class="mob-stat-ico">🔧</div><div class="mob-stat-label">Servis</div><div class="mob-stat-val" id="mob-stat-servis">–</div></div>
-  <div class="mob-stat-card s-blue"><div class="mob-stat-ico">💰</div><div class="mob-stat-label">Prihod MTD</div><div class="mob-stat-val" id="mob-stat-prihod">–</div></div>
-  <div class="mob-stat-card s-blue"><div class="mob-stat-ico">👥</div><div class="mob-stat-label">Klijenti</div><div class="mob-stat-val" id="mob-stat-klijenti">–</div></div>
+  <div class="mob-stat-card s-red"><div class="mob-stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> </div><div class="mob-stat-label">Novi upiti</div><div class="mob-stat-val" id="mob-stat-upiti">–</div></div>
+  <div class="mob-stat-card s-green"><div class="mob-stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> </div><div class="mob-stat-label">Prodaje</div><div class="mob-stat-val" id="mob-stat-prodaje">–</div></div>
+  <div class="mob-stat-card s-orange"><div class="mob-stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.8 2.8 0 0 1-4-4l9-9z"/><path d="M17.5 3.5a4 4 0 0 1 3 3"/></svg> </div><div class="mob-stat-label">Servis</div><div class="mob-stat-val" id="mob-stat-servis">–</div></div>
+  <div class="mob-stat-card s-blue"><div class="mob-stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M15 9.5a3 3 0 0 0-3-1.5c-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2a3 3 0 0 1-3-1.5"/></svg> </div><div class="mob-stat-label">Prihod MTD</div><div class="mob-stat-val" id="mob-stat-prihod">–</div></div>
+  <div class="mob-stat-card s-blue"><div class="mob-stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg> </div><div class="mob-stat-label">Klijenti</div><div class="mob-stat-val" id="mob-stat-klijenti">–</div></div>
 </div>
 
 <div class="shell">
@@ -594,7 +600,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
   </div>
   <div class="topbar-right">
     <div class="tb-notif">
-      🔔
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
       <span class="tb-notif-dot"></span>
     </div>
     <div class="tb-user">
@@ -613,45 +619,45 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <div class="sidebar-section">
     <div class="sidebar-label">Pregled</div>
     <div class="nav-item active" onclick="goView('dashboard')">
-      <span class="nav-ico">📊</span> Dashboard
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg> </span> Dashboard
     </div>
     <div class="nav-item" onclick="goView('analitika')">
-      <span class="nav-ico">📈</span> Analitika
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg> </span> Analitika
     </div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Prodaja</div>
     <div class="nav-item" onclick="goView('upiti')">
-      <span class="nav-ico">📩</span> Upiti & Narudžbe
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> </span> Upiti & Narudžbe
       <span class="nav-badge" id="badge-upiti">3</span>
     </div>
     <div class="nav-item" onclick="goView('proizvodi')">
-      <span class="nav-ico">🏭</span> Proizvodi
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h20V9l-6 4V9l-6 4V4H4a2 2 0 0 0-2 2v14z"/><path d="M6 20v-4h4v4"/></svg> </span> Proizvodi
     </div>
     <div class="nav-item" onclick="goView('ponude')">
-      <span class="nav-ico">📋</span> Ponude
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg> </span> Ponude
     </div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Operacije</div>
     <div class="nav-item" onclick="goView('servis')">
-      <span class="nav-ico">🔧</span> Servisni zahtjevi
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.8 2.8 0 0 1-4-4l9-9z"/><path d="M17.5 3.5a4 4 0 0 1 3 3"/></svg> </span> Servisni zahtjevi
       <span class="nav-badge nav-badge-g" id="badge-servis">2</span>
     </div>
     <div class="nav-item" onclick="goView('klijenti')">
-      <span class="nav-ico">👥</span> CRM — Klijenti
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg> </span> CRM — Klijenti
     </div>
     <div class="nav-item" onclick="goView('kalendar')">
-      <span class="nav-ico">📅</span> Kalendar
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> </span> Kalendar
     </div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Sistem</div>
     <div class="nav-item" onclick="goView('korisnici')">
-      <span class="nav-ico">🔐</span> Korisnici
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> </span> Korisnici
     </div>
     <div class="nav-item" onclick="goView('postavke')">
-      <span class="nav-ico">⚙️</span> Postavke
+      <span class="nav-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg> </span> Postavke
     </div>
   </div>
 </nav>
@@ -663,11 +669,11 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <div class="view active" id="view-dashboard">
     <!-- Mobile stat scroll - samo na dashboard -->
     <div class="mob-stat-row" id="mobStatRow">
-      <div class="mob-sc r"><div class="mob-sc-i">📩</div><div class="mob-sc-l">Novi upiti</div><div class="mob-sc-v" id="ms1">–</div></div>
-      <div class="mob-sc g"><div class="mob-sc-i">✅</div><div class="mob-sc-l">Prodaje</div><div class="mob-sc-v" id="ms2">–</div></div>
-      <div class="mob-sc o"><div class="mob-sc-i">🔧</div><div class="mob-sc-l">Servis</div><div class="mob-sc-v" id="ms3">–</div></div>
-      <div class="mob-sc b"><div class="mob-sc-i">💰</div><div class="mob-sc-l">Prihod</div><div class="mob-sc-v" id="ms4">–</div></div>
-      <div class="mob-sc b"><div class="mob-sc-i">👥</div><div class="mob-sc-l">Klijenti</div><div class="mob-sc-v" id="ms5">–</div></div>
+      <div class="mob-sc r"><div class="mob-sc-i"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> </div><div class="mob-sc-l">Novi upiti</div><div class="mob-sc-v" id="ms1">–</div></div>
+      <div class="mob-sc g"><div class="mob-sc-i"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> </div><div class="mob-sc-l">Prodaje</div><div class="mob-sc-v" id="ms2">–</div></div>
+      <div class="mob-sc o"><div class="mob-sc-i"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.8 2.8 0 0 1-4-4l9-9z"/><path d="M17.5 3.5a4 4 0 0 1 3 3"/></svg> </div><div class="mob-sc-l">Servis</div><div class="mob-sc-v" id="ms3">–</div></div>
+      <div class="mob-sc b"><div class="mob-sc-i"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M15 9.5a3 3 0 0 0-3-1.5c-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2a3 3 0 0 1-3-1.5"/></svg> </div><div class="mob-sc-l">Prihod</div><div class="mob-sc-v" id="ms4">–</div></div>
+      <div class="mob-sc b"><div class="mob-sc-i"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg> </div><div class="mob-sc-l">Klijenti</div><div class="mob-sc-v" id="ms5">–</div></div>
     </div>
     <div class="page-header">
       <div>
@@ -682,25 +688,25 @@ tr:hover td{background:rgba(255,255,255,.02)}
 
     <div class="stats-grid" id="statsGrid">
       <div class="stat-card s-red">
-        <div class="stat-ico">📩</div>
+        <div class="stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> </div>
         <div class="stat-label">Novi upiti (7 dana)</div>
         <div class="stat-val">12</div>
         <div class="stat-change"><span class="change-up">↑ +4</span> vs prošle sedmice</div>
       </div>
       <div class="stat-card s-green">
-        <div class="stat-ico">✅</div>
+        <div class="stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> </div>
         <div class="stat-label">Završene prodaje</div>
         <div class="stat-val">3</div>
         <div class="stat-change"><span class="change-up">↑ +1</span> ovaj mjesec</div>
       </div>
       <div class="stat-card s-orange">
-        <div class="stat-ico">🔧</div>
+        <div class="stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.8 2.8 0 0 1-4-4l9-9z"/><path d="M17.5 3.5a4 4 0 0 1 3 3"/></svg> </div>
         <div class="stat-label">Servisni zahtjevi</div>
         <div class="stat-val">7</div>
         <div class="stat-change"><span class="change-dn">↓ 2</span> na čekanju</div>
       </div>
       <div class="stat-card s-blue">
-        <div class="stat-ico">💰</div>
+        <div class="stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M15 9.5a3 3 0 0 0-3-1.5c-1.7 0-3 .9-3 2s1.3 2 3 2 3 .9 3 2-1.3 2-3 2a3 3 0 0 1-3-1.5"/></svg> </div>
         <div class="stat-label">Prihod (BAM, MTD)</div>
         <div class="stat-val">218<em>K</em></div>
         <div class="stat-change"><span class="change-up">↑ +12%</span> vs prošli mj.</div>
@@ -748,10 +754,10 @@ tr:hover td{background:rgba(255,255,255,.02)}
       </div>
     </div>
     <div class="stats-grid" id="analyticsGrid">
-      <div class="stat-card s-blue"><div class="stat-ico">👁️</div><div class="stat-label">Posjete (30d)</div><div class="stat-val">1,847</div><div class="stat-change"><span class="change-up">↑ +23%</span></div></div>
-      <div class="stat-card s-red"><div class="stat-ico">🛒</div><div class="stat-label">Upiti s weba</div><div class="stat-val">34</div><div class="stat-change"><span class="change-up">↑ +8</span></div></div>
-      <div class="stat-card s-green"><div class="stat-ico">📊</div><div class="stat-label">Konverzija</div><div class="stat-val">1<em>.8%</em></div><div class="stat-change"><span class="change-up">↑ +0.3%</span></div></div>
-      <div class="stat-card s-orange"><div class="stat-ico">⏱️</div><div class="stat-label">Avg. vrijeme na sajtu</div><div class="stat-val">3<em>:42</em></div><div class="stat-change"><span class="change-up">↑ +18s</span></div></div>
+      <div class="stat-card s-blue"><div class="stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> </div><div class="stat-label">Posjete (30d)</div><div class="stat-val">1,847</div><div class="stat-change"><span class="change-up">↑ +23%</span></div></div>
+      <div class="stat-card s-red"><div class="stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg> </div><div class="stat-label">Upiti s weba</div><div class="stat-val">34</div><div class="stat-change"><span class="change-up">↑ +8</span></div></div>
+      <div class="stat-card s-green"><div class="stat-ico"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg> </div><div class="stat-label">Konverzija</div><div class="stat-val">1<em>.8%</em></div><div class="stat-change"><span class="change-up">↑ +0.3%</span></div></div>
+      <div class="stat-card s-orange"><div class="stat-ico">⏱</div><div class="stat-label">Avg. vrijeme na sajtu</div><div class="stat-val">3<em>:42</em></div><div class="stat-change"><span class="change-up">↑ +18s</span></div></div>
     </div>
     <div class="grid-2">
       <div class="card">
@@ -781,8 +787,8 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div class="page-header">
       <div><div class="page-title">Upiti & <em>narudžbe</em></div><div class="page-sub">// Kanban pregled statusa</div></div>
       <div class="page-actions">
-        <button class="btn btn-ghost" onclick="setUpitiView('table')">☰ Tabela</button>
-        <button class="btn btn-ghost" onclick="setUpitiView('kanban')">⬛ Kanban</button>
+        <button class="btn btn-ghost" onclick="setUpitiView('table')"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg> Tabela</button>
+        <button class="btn btn-ghost" onclick="setUpitiView('kanban')"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" fill="currentColor" stroke="none"/></svg> Kanban</button>
         <button class="btn btn-primary" onclick="openModal('modalUpit')">+ Novi upit</button>
       </div>
     </div>
@@ -909,7 +915,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
   <div class="view" id="view-postavke">
     <div class="page-header">
       <div><div class="page-title">Postavke <em>sistema</em></div><div class="page-sub">// Konfiguracija i integracije</div></div>
-      <div class="page-actions"><button class="btn btn-primary" onclick="saveSettings()">💾 Sačuvaj</button></div>
+      <div class="page-actions"><button class="btn btn-primary" onclick="saveSettings()"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg> Sačuvaj</button></div>
     </div>
     <div class="tabs">
       <button class="tab on" onclick="switchSettingsTab('general',this)">Opće</button>
@@ -1015,7 +1021,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
       <div class="f-row"><div class="f-group"><label class="f-label">Popust (%)</label><input class="f-input" type="number" value="0" min="0" max="100"></div><div class="f-group"><label class="f-label">Plaćanje</label><select class="f-select"><option>Gotovina</option><option>Leasing</option><option>Odgođeno 30 dana</option><option>Odgođeno 60 dana</option></select></div></div>
       <div class="f-group"><label class="f-label">Napomena na ponudi</label><textarea class="f-textarea" style="min-height:60px" placeholder="Posebni uvjeti, napomene..."></textarea></div>
     </div>
-    <div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal('modalPonuda')">Odustani</button><button class="btn btn-dark" onclick="previewPonuda()">👁 Pregled PDF</button><button class="btn btn-primary" onclick="savePonuda()">Generiši ponudu</button></div>
+    <div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal('modalPonuda')">Odustani</button><button class="btn btn-dark" onclick="previewPonuda()"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Pregled PDF</button><button class="btn btn-primary" onclick="savePonuda()">Generiši ponudu</button></div>
   </div>
 </div>
 
@@ -1040,7 +1046,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
     <div class="modal-body" id="permModalBody"></div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('modalPerm')">Odustani</button>
-      <button class="btn btn-primary" onclick="savePerms()">💾 Sačuvaj permisije</button>
+      <button class="btn btn-primary" onclick="savePerms()"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg> Sačuvaj permisije</button>
     </div>
   </div>
 </div>
@@ -1489,9 +1495,9 @@ function renderUpitiTable(){
 // ══════════════════════════════════
 // PROIZVODI
 // ══════════════════════════════════
-var SVG_F='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"><rect x="80" y="80" width="160" height="80" rx="5" fill="#CC1C1C"/><rect x="150" y="50" width="80" height="55" rx="4" fill="#a81616"/><rect x="38" y="20" width="10" height="160" rx="2" fill="#ccc"/><rect x="58" y="20" width="10" height="160" rx="2" fill="#ddd"/><rect x="20" y="155" width="58" height="9" rx="2" fill="#888"/><rect x="20" y="168" width="58" height="9" rx="2" fill="#888"/><circle cx="100" cy="168" r="24" fill="#222"/><circle cx="100" cy="168" r="16" fill="#444"/><circle cx="220" cy="168" r="20" fill="#222"/><circle cx="220" cy="168" r="13" fill="#444"/></svg>';
-var SVG_B='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"><rect x="70" y="110" width="160" height="60" rx="5" fill="#CC1C1C"/><rect x="140" y="72" width="80" height="60" rx="4" fill="#a81616"/><rect x="60" y="65" width="14" height="50" rx="3" fill="#999" transform="rotate(-12,67,90)"/><rect x="42" y="92" width="46" height="14" rx="3" fill="#777" transform="rotate(28,65,99)"/><circle cx="95" cy="172" r="24" fill="#222"/><circle cx="200" cy="172" r="20" fill="#222"/></svg>';
-var SVG_U='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"><rect x="90" y="95" width="160" height="70" rx="5" fill="#CC1C1C"/><rect x="158" y="55" width="82" height="62" rx="4" fill="#a81616"/><path d="M 90 95 L 48 62 L 38 84 L 48 118 L 90 118 Z" fill="#CC1C1C"/><path d="M 38 84 L 18 78 L 18 112 L 38 106 Z" fill="#888"/><circle cx="118" cy="170" r="25" fill="#222"/><circle cx="228" cy="170" r="21" fill="#222"/></svg>';
+var SVG_F='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"><rect x="80" y="80" width="160" height="80" rx="5" fill="#CC1C1C"/><rect x="150" y="50" width="80" height="55" rx="4" fill="#a81616"/><rect x="38" y="20" width="10" height="160" rx="2" fill="#ccc"/><rect x="58" y="20" width="10" height="160" rx="2" fill="#ddd"/><rect x="20" y="155" width="58" height="9" rx="2" fill="#888"/><rect x="20" y="168" width="58" height="9" rx="2" fill="#888"/><circle cx="100" cy="168" r="24" fill="#222"/><circle cx="100" cy="168" r="16" fill="#444"/><circle cx="220" cy="168" r="20" fill="#222"/><circle cx="220" cy="168" r="13" fill="#444"/></svg> ';
+var SVG_B='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"><rect x="70" y="110" width="160" height="60" rx="5" fill="#CC1C1C"/><rect x="140" y="72" width="80" height="60" rx="4" fill="#a81616"/><rect x="60" y="65" width="14" height="50" rx="3" fill="#999" transform="rotate(-12,67,90)"/><rect x="42" y="92" width="46" height="14" rx="3" fill="#777" transform="rotate(28,65,99)"/><circle cx="95" cy="172" r="24" fill="#222"/><circle cx="200" cy="172" r="20" fill="#222"/></svg> ';
+var SVG_U='<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"><rect x="90" y="95" width="160" height="70" rx="5" fill="#CC1C1C"/><rect x="158" y="55" width="82" height="62" rx="4" fill="#a81616"/><path d="M 90 95 L 48 62 L 38 84 L 48 118 L 90 118 Z" fill="#CC1C1C"/><path d="M 38 84 L 18 78 L 18 112 L 38 106 Z" fill="#888"/><circle cx="118" cy="170" r="25" fill="#222"/><circle cx="228" cy="170" r="21" fill="#222"/></svg> ';
 
 function getSVG(kat){
   if(kat==='Bager')return SVG_B;
@@ -1641,7 +1647,7 @@ function applyPerms(){
           var t=document.createElement('span');
           t.className='perm-tag';
           t.style.cssText='font-family:var(--M);font-size:.5rem;color:var(--muted);margin-left:auto';
-          t.textContent='👁';
+          t.textContent='<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ';
           el.appendChild(t);
         }
       }
@@ -1658,7 +1664,7 @@ function renderKorisnici(){
     var ltr=u.ime.charAt(0);
     var bc=u.uloga==='superadmin'?'badge-red':u.uloga==='prodaja'?'badge-green':'badge-blue';
     var btn=isAdmin&&u.uloga!=='superadmin'
-      ?'<button class="btn btn-primary" style="padding:5px 10px;font-size:.62rem" onclick="openPermModal(\'' + u.username + '\')">✏ Permisije</button>'
+      ?'<button class="btn btn-primary" style="padding:5px 10px;font-size:.62rem" onclick="openPermModal(\'' + u.username + '\')"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg> Permisije</button>'
       :(u.uloga==='superadmin'?'<span style="font-family:var(--M);font-size:.6rem;color:var(--muted)">puni pristup</span>':'');
     return'<tr><td><div class="avatar sm">'+ltr+'</div></td>'
       +'<td><div style="font-weight:600;font-size:.84rem">'+u.ime+'</div><div style="font-family:var(--M);font-size:.6rem;color:var(--mid)">@'+u.username+'</div></td>'
@@ -1677,7 +1683,7 @@ function renderKorisnici(){
     +'<th style="text-align:center;font-family:var(--M);font-size:.6rem;color:var(--mid)">Servis</th>'
     +'</tr></thead><tbody>'
     +MODULI.map(function(m){
-      function ico(u){var p=(PERMS[u]||{})[m.key]||'none';return p==='full'?'<span style="color:var(--green);font-size:.75rem">✓ full</span>':p==='view'?'<span style="color:var(--blue);font-size:.72rem">👁 view</span>':'<span style="color:var(--muted);font-size:.75rem">–</span>';}
+      function ico(u){var p=(PERMS[u]||{})[m.key]||'none';return p==='full'?'<span style="color:var(--green);font-size:.75rem">✓ full</span>':p==='view'?'<span style="color:var(--blue);font-size:.72rem"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> view</span>':'<span style="color:var(--muted);font-size:.75rem">–</span>';}
       return'<tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 0;font-weight:600;font-size:.8rem">'+m.label+'</td>'
         +'<td style="text-align:center">'+ico('admin')+'</td>'
         +'<td style="text-align:center">'+ico('prodaja')+'</td>'
@@ -1697,7 +1703,7 @@ function openPermModal(username){
       +'<td style="padding:11px 0">'
       +'<div style="display:flex;gap:16px">'
       +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem"><input type="radio" name="perm_'+m.key+'" value="full" '+(val==='full'?'checked':'')+' style="accent-color:var(--green);width:14px;height:14px"> <span style="color:var(--green)">✓ Puni pristup</span></label>'
-      +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem"><input type="radio" name="perm_'+m.key+'" value="view" '+(val==='view'?'checked':'')+' style="accent-color:var(--blue);width:14px;height:14px"> <span style="color:var(--blue)">👁 Samo pregled</span></label>'
+      +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem"><input type="radio" name="perm_'+m.key+'" value="view" '+(val==='view'?'checked':'')+' style="accent-color:var(--blue);width:14px;height:14px"> <span style="color:var(--blue)"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Samo pregled</span></label>'
       +'<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem"><input type="radio" name="perm_'+m.key+'" value="none" '+(val==='none'?'checked':'')+' style="accent-color:var(--red);width:14px;height:14px"> <span style="color:var(--muted)">– Skriveno</span></label>'
       +'</div></td></tr>';
   }).join('');
@@ -1868,8 +1874,8 @@ function updateMobFab(v){
   var fab = document.getElementById('mobFab');
   if(!fab) return;
   var fabMap = {
-    'upiti':'📩','klijenti':'👤','servis':'🔧','proizvodi':'📦',
-    'ponude':'📋','dashboard':'📩'
+    'upiti':'<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> ','klijenti':'<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ','servis':'<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.8 2.8 0 0 1-4-4l9-9z"/><path d="M17.5 3.5a4 4 0 0 1 3 3"/></svg> ','proizvodi':'<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg> ',
+    'ponude':'<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg> ','dashboard':'<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> '
   };
   fab.textContent = fabMap[v] || '+';
 }
@@ -2201,7 +2207,7 @@ function mNav(view, title, btn){
   document.querySelectorAll('.mob-nav-btn').forEach(function(b){ b.classList.remove('on'); });
   if(btn) btn.classList.add('on');
   // FAB
-  var fabMap = {dashboard:'📩',upiti:'📩',klijenti:'👤',servis:'🔧',proizvodi:'📦',ponude:'📋'};
+  var fabMap = {dashboard:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> ',upiti:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg> ',klijenti:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ',servis:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9a2.8 2.8 0 0 1-4-4l9-9z"/><path d="M17.5 3.5a4 4 0 0 1 3 3"/></svg> ',proizvodi:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg> ',ponude:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg> '};
   var fab = document.getElementById('mobFab');
   if(fab) fab.textContent = fabMap[view]||'+';
   // Re-apply layout fixes after view change
