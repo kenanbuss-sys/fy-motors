@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>FAMES Admin — Proizvodi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--red:#CC1C1C;--red-h:#a81616;--black:#111;--grey:#f4f4f4;--mid:#888;--border:#e2e2e2;--H:'Oswald',sans-serif;--B:'Inter',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--B);background:#ececec;color:#111;font-size:14px}
+button{font-family:var(--H);cursor:pointer;border:none}
+input,select,textarea{font-family:var(--B);font-size:.86rem;padding:9px 11px;border:1px solid var(--border);width:100%;background:#fff;border-radius:0}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(204,28,28,.35)}
+textarea{resize:vertical;min-height:110px;line-height:1.6}
+label.fl{font-family:var(--H);font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#666;display:block;margin:14px 0 5px}
+.btn{background:var(--red);color:#fff;font-weight:600;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;padding:12px 20px;transition:background .2s}
+.btn:hover{background:var(--red-h)}
+.btn-dark{background:#111;color:#fff}.btn-dark:hover{background:#333}
+.btn-ghost{background:transparent;color:#111;border:2px solid var(--border)}.btn-ghost:hover{border-color:#111}
+.btn-sm{padding:7px 12px;font-size:.66rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.top{background:#111;color:#fff;padding:0 22px;display:flex;align-items:center;gap:18px;height:60px;position:sticky;top:0;z-index:50}
+.top .lg{font-family:var(--H);font-weight:700;font-size:1.15rem;letter-spacing:.04em}.top .lg em{color:var(--red);font-style:normal}
+.top .st{font-size:.72rem;color:#aaa}
+.top .sp{flex:1}
+.wrap{max-width:1280px;margin:26px auto;padding:0 20px}
+.card{background:#fff;border:1px solid var(--border);padding:26px}
+.login-box{max-width:470px;margin:8vh auto}
+.login-box h1{font-family:var(--H);font-size:1.5rem;text-transform:uppercase;margin-bottom:4px}
+.login-box p{font-size:.8rem;color:#666;line-height:1.7;margin-bottom:8px}
+.hint{background:var(--grey);border-left:3px solid var(--red);padding:12px 14px;font-size:.74rem;color:#555;line-height:1.7;margin-top:16px}
+.hint code{background:#fff;padding:1px 5px;border:1px solid var(--border);font-size:.7rem}
+.err{background:#fdecea;border-left:3px solid #c62828;color:#8e1c1c;padding:11px 14px;font-size:.78rem;margin-top:12px;display:none;line-height:1.6}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+.plist{background:#fff;border:1px solid var(--border);max-height:calc(100vh - 200px);overflow-y:auto}
+.pl-head{padding:13px 15px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;position:sticky;top:0;background:#fff;z-index:2}
+.pl-head input{flex:1}
+.pl-head select{width:120px}
+.pitem{display:flex;gap:11px;padding:10px 13px;border-bottom:1px solid #f0f0f0;cursor:pointer;align-items:center;transition:background .15s}
+.pitem:hover{background:#fafafa}.pitem.on{background:#fdf3f3;border-left:3px solid var(--red);padding-left:10px}
+.pitem img{width:56px;height:42px;object-fit:contain;background:#fff;border:1px solid var(--border);flex-shrink:0}
+.pitem .nm{font-family:var(--H);font-weight:600;font-size:.8rem;line-height:1.2}
+.pitem .ct{font-size:.66rem;color:var(--mid);margin-top:2px}
+.pitem .idb{margin-left:auto;font-size:.6rem;color:#bbb;flex-shrink:0}
+.ed h2{font-family:var(--H);font-size:1.1rem;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.ed h2 .tag{font-size:.6rem;background:var(--grey);color:#666;padding:3px 8px;letter-spacing:.1em}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.imgs{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.imgb{position:relative;width:150px;border:1px solid var(--border);background:#fff}
+.imgb img{width:100%;height:104px;object-fit:contain;display:block}
+.imgb .main-b{position:absolute;top:5px;left:5px;background:var(--red);color:#fff;font-family:var(--H);font-size:.55rem;font-weight:600;letter-spacing:.08em;padding:2px 7px;text-transform:uppercase}
+.imgb .ia{display:flex;border-top:1px solid var(--border)}
+.imgb .ia button{flex:1;background:#fff;font-size:.6rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:6px 2px;color:#444}
+.imgb .ia button:hover{background:var(--grey)}
+.imgb .ia .del:hover{background:#fdecea;color:#c62828}
+.addimg{width:150px;height:139px;border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#999;cursor:pointer;font-size:.7rem;background:#fff}
+.addimg:hover{border-color:var(--red);color:var(--red)}
+.rows .r{display:grid;grid-template-columns:1fr 1.4fr 34px;gap:8px;margin-bottom:8px}
+.rows .r1{display:grid;grid-template-columns:1fr 34px;gap:8px;margin-bottom:8px}
+.rows .x{background:#fff;border:1px solid var(--border);color:#c62828;font-size:.85rem}
+.rows .x:hover{background:#fdecea}
+.addr{background:transparent;border:1px dashed var(--border);color:#666;width:100%;padding:8px;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase}
+.addr:hover{border-color:#111;color:#111}
+.bar{display:flex;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid var(--border);align-items:center;flex-wrap:wrap}
+.bar .sp{flex:1}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;color:#555}
+.chip input{width:auto}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;font-family:var(--H);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;padding:12px 24px;z-index:200;display:none}
+.toast.err2{background:#c62828}
+.pub-box{background:#111;color:#fff;padding:20px 22px;margin-top:20px}
+.pub-box .t{font-family:var(--H);font-weight:600;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.pub-box .s{font-size:.76rem;color:#aaa;line-height:1.7}
+.pub-box .prog{font-size:.74rem;color:#7ec97e;margin-top:8px;display:none}
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:center;justify-content:center}
+.mask .mbox{background:#fff;max-width:430px;width:92%;padding:26px}
+.mask .mbox h3{font-family:var(--H);text-transform:uppercase;font-size:1rem;margin-bottom:8px}
+.mask .mbox p{font-size:.82rem;color:#555;line-height:1.7;margin-bottom:18px}
+.badge-soon{font-size:.62rem;color:#999}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.plist{max-height:340px}.frow,.frow3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="lg">FAMES <em>ADMIN</em></div>
+  <div class="st" id="topSt">Niste prijavljeni</div>
+  <div class="sp"></div>
+  <button class="btn btn-sm btn-dark" id="btnLogout" style="display:none" onclick="logout()">Odjava</button>
+</div>
+
+<!-- ═══ LOGIN ═══ -->
+<div class="wrap" id="vLogin">
+  <div class="card login-box">
+    <h1 id="lgTitle">Prijava</h1>
+    <p id="lgSub">Uređivanje proizvoda na fames.ba.</p>
+
+    <div id="loginFields">
+      <label class="fl">Korisničko ime</label>
+      <input type="text" id="inUser" autocomplete="username">
+      <label class="fl">Šifra</label>
+      <input type="password" id="inPass" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+
+    <div id="setupFields" style="display:none">
+      <label class="fl">Odaberi korisničko ime</label>
+      <input type="text" id="suUser" autocomplete="username">
+      <label class="fl">Odaberi šifru (min. 10 znakova)</label>
+      <input type="password" id="suPass" autocomplete="new-password">
+      <label class="fl">Ponovi šifru</label>
+      <input type="password" id="suPass2" autocomplete="new-password">
+      <label class="fl">GitHub token</label>
+      <input type="password" id="inTok" placeholder="github_pat_...">
+      <label class="fl">Repozitorij</label>
+      <input type="text" id="inRepo" value="kenanbuss-sys/fy-motors">
+    </div>
+
+    <div class="err" id="loginErr"></div>
+    <div class="bar" style="border:none;padding-top:6px">
+      <button class="btn" id="btnLogin" onclick="doLogin()">Prijavi se →</button>
+      <button class="btn" id="btnSetup" onclick="doSetup()" style="display:none">Sačuvaj i prijavi se →</button>
+      <div class="sp"></div>
+      <button class="btn btn-ghost btn-sm" id="btnReset" onclick="resetAuth()" style="display:none">Novi token / reset</button>
+    </div>
+    <div class="hint" id="setupHint" style="display:none">
+      <strong>Prvo podešavanje (jednom po računaru).</strong> Odabereš svoje korisničko ime i šifru, i uneseš GitHub token:
+      GitHub → Settings → Developer settings → <em>Fine-grained personal access tokens</em> → Generate new token → Repository access: samo <code>fy-motors</code> → Permissions → Contents: <code>Read and write</code>.
+      Token se šifruje tvojom šifrom (AES-256) i čuva samo u ovom browseru — ubuduće se prijavljuješ samo korisničkim imenom i šifrom.
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PANEL ═══ -->
+<div class="wrap" id="vPanel" style="display:none">
+  <div class="grid">
+    <div>
+      <div class="plist" id="plist">
+        <div class="pl-head">
+          <input type="text" id="q" placeholder="Pretraga..." oninput="renderList()">
+          <select id="qcat" onchange="renderList()"><option value="">Sve</option></select>
+        </div>
+        <div id="plBody"></div>
+      </div>
+      <button class="btn btn-dark" style="width:100%;margin-top:12px" onclick="newProduct()">+ Novi proizvod</button>
+      <div class="pub-box">
+        <div class="t">Objava na sajt</div>
+        <div class="s" id="pubSt">Nema neobjavljenih izmjena.</div>
+        <div class="prog" id="pubProg"></div>
+        <div class="bar" style="border:none;margin-top:14px;padding:0">
+          <button class="btn" id="btnPub" onclick="publish()" disabled>Objavi na sajt →</button>
+          <button class="btn btn-sm btn-ghost" style="color:#fff;border-color:#444" onclick="reloadRemote(true)">Osvježi iz repoa</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card ed" id="ed">
+      <div id="edEmpty" style="color:#999;text-align:center;padding:70px 0;font-size:.85rem">← Izaberi proizvod iz liste ili dodaj novi.</div>
+      <div id="edForm" style="display:none">
+        <h2><span id="edTitle">Proizvod</span><span class="tag" id="edId"></span></h2>
+
+        <div class="frow">
+          <div><label class="fl">Naziv (prikaz na sajtu)</label><input id="f_name"></div>
+          <div><label class="fl">Podnaslov / tip (npr. „Dizel viljuškar · 2 t")</label><input id="f_cl"></div>
+        </div>
+        <div class="frow3">
+          <div><label class="fl">Kategorija</label><select id="f_cat"></select></div>
+          <div><label class="fl">Brend</label><select id="f_brand"><option>LONKING</option><option>BELIFT</option><option>TAVOL</option></select></div>
+          <div><label class="fl">Pogon</label><select id="f_pogon"><option value="dizel">Dizel</option><option value="elektricni">Električni</option><option value="hidraulicni">Hidraulični</option></select></div>
+        </div>
+        <div class="frow3">
+          <div><label class="fl">Bedž</label><select id="f_badge"><option value="">— bez —</option><option>Novo</option><option>Bestseller</option><option>Akcija</option></select></div>
+          <div><label class="fl">Dostupnost</label><select id="f_stock"><option value="false">Po narudžbi</option><option value="true">Na stanju</option></select></div>
+          <div><label class="fl">Tagovi (zarezom odvojeni)</label><input id="f_tags" placeholder="2 t, Dizel, Euro III"></div>
+        </div>
+
+        <label class="fl">Opis</label>
+        <textarea id="f_desc"></textarea>
+
+        <label class="fl">Slike <span class="badge-soon">(prva = glavna · automatski se svode na 1200×900, bijela pozadina)</span></label>
+        <div class="imgs" id="imgs"></div>
+        <input type="file" id="fileIn" accept="image/*" multiple style="display:none" onchange="addImages(this.files)">
+
+        <label class="fl">Tehničke specifikacije</label>
+        <div class="rows" id="specs"></div>
+        <button class="addr" onclick="addSpec()">+ dodaj red</button>
+
+        <label class="fl">Dostupne opcije</label>
+        <div class="rows" id="opts"></div>
+        <button class="addr" onclick="addOpt()">+ dodaj opciju</button>
+
+        <div class="bar">
+          <button class="btn" onclick="saveProduct()">Sačuvaj izmjene</button>
+          <button class="btn btn-ghost btn-sm" onclick="closeEditor()">Odustani</button>
+          <div class="sp"></div>
+          <button class="btn btn-sm" style="background:#fff;color:#c62828;border:2px solid #c62828" onclick="askDelete()">Obriši proizvod</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="mask">
+  <div class="mbox">
+    <h3 id="mkT">Potvrda</h3>
+    <p id="mkP"></p>
+    <div class="bar" style="border:none;padding:0;margin:0">
+      <button class="btn" id="mkYes">Da, nastavi</button>
+      <button class="btn btn-ghost btn-sm" onclick="hideMask()">Odustani</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+/* ══════════ KONFIG ══════════ */
+var FILE_PATH='index.html';
+var CATS={'viljuskar':'Viljuškari','bager':'Bageri','utovarivac':'Utovarivači','skid-steer':'Skid Steer',
+'kombinirka':'Kombinirke','valjak':'Valjci','platforma':'Makazaste platforme','boom-lift':'Boom Lift',
+'vakum':'Vakum za staklo','traktor':'Traktori'};
+
+var S={tok:null,repo:null,branch:null,fileSha:null,html:null,P:[],dirty:false,cur:null,curIdx:-1};
+
+/* ══════════ POMOĆNE ══════════ */
+function $(id){return document.getElementById(id)}
+function toast(msg,err){var t=$('toast');t.textContent=msg;t.className='toast'+(err?' err2':'');t.style.display='block';clearTimeout(t._h);t._h=setTimeout(function(){t.style.display='none'},3200)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function showMask(title,text,onYes){$('mkT').textContent=title;$('mkP').textContent=text;$('mask').style.display='flex';$('mkYes').onclick=function(){hideMask();onYes()}}
+function hideMask(){$('mask').style.display='none'}
+function setDirty(d){S.dirty=d;$('btnPub').disabled=!d;$('pubSt').textContent=d?'Imaš neobjavljene izmjene — klikni „Objavi" da odu na sajt.':'Nema neobjavljenih izmjena.'}
+
+/* base64 <-> UTF-8 (za velike fajlove, bez rušenja stacka) */
+function b64ToText(b64){
+  var bin=atob(b64.replace(/\n/g,''));
+  var bytes=new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+function textToB64(txt){
+  var bytes=new TextEncoder().encode(txt);
+  var bin='';var CH=32768;
+  for(var i=0;i<bytes.length;i+=CH)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH));
+  return btoa(bin);
+}
+
+/* ══════════ GITHUB API ══════════ */
+function gh(path,opt){
+  opt=opt||{};opt.headers=opt.headers||{};
+  opt.headers['Authorization']='Bearer '+S.tok;
+  opt.headers['Accept']='application/vnd.github+json';
+  opt.headers['X-GitHub-Api-Version']='2022-11-28';
+  return fetch('https://api.github.com'+path,opt).then(function(r){
+    if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error('GitHub '+r.status+': '+(j.message||path))});
+    return r.json();
+  });
+}
+
+/* ══════════ PRIJAVA (username + šifra, token šifrovan AES-GCM) ══════════ */
+var AUTH_KEY='fames_auth_v1';
+function b64e(buf){var b='';new Uint8Array(buf).forEach(function(x){b+=String.fromCharCode(x)});return btoa(b)}
+function b64d(str){var bin=atob(str);var a=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return a}
+function deriveKey(user,pass,salt,iter){
+  return crypto.subtle.importKey('raw',new TextEncoder().encode(user.toLowerCase().trim()+'\u0000'+pass),'PBKDF2',false,['deriveKey'])
+  .then(function(km){return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:iter,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])});
+}
+function showErr(m){var e=$('loginErr');e.textContent=m;e.style.display='block'}
+function setMode(setup){
+  $('loginFields').style.display=setup?'none':'';
+  $('setupFields').style.display=setup?'':'none';
+  $('btnLogin').style.display=setup?'none':'';
+  $('btnSetup').style.display=setup?'':'none';
+  $('setupHint').style.display=setup?'':'none';
+  $('btnReset').style.display=setup?'none':'';
+  $('lgTitle').textContent=setup?'Prvo podešavanje':'Prijava';
+  $('lgSub').textContent=setup?'Napravi pristup za ovaj računar.':'Uređivanje proizvoda na fames.ba.';
+  $('loginErr').style.display='none';
+}
+function doSetup(){
+  var user=$('suUser').value.trim(),pass=$('suPass').value,pass2=$('suPass2').value;
+  var tok=$('inTok').value.trim(),repo=$('inRepo').value.trim();
+  if(!user){showErr('Unesi korisničko ime.');return}
+  if(pass.length<10){showErr('Šifra mora imati najmanje 10 znakova.');return}
+  if(pass!==pass2){showErr('Šifre se ne poklapaju.');return}
+  if(!tok||!repo){showErr('Unesi GitHub token i repozitorij.');return}
+  $('btnSetup').disabled=true;
+  ghConnect(tok,repo).then(function(){
+    var salt=crypto.getRandomValues(new Uint8Array(16));
+    var iv=crypto.getRandomValues(new Uint8Array(12));
+    var iter=310000;
+    return deriveKey(user,pass,salt,iter).then(function(key){
+      return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,new TextEncoder().encode(JSON.stringify({tok:tok,repo:repo})));
+    }).then(function(ct){
+      localStorage.setItem(AUTH_KEY,JSON.stringify({salt:b64e(salt),iv:b64e(iv),iter:iter,ct:b64e(ct)}));
+      sessionStorage.setItem('fames_tok',tok);sessionStorage.setItem('fames_repo',repo);
+      enterPanel();
+    });
+  }).catch(function(e){
+    showErr(e.message.indexOf('401')>=0?'Token nije važeći — provjeri ga na GitHubu.':e.message);
+    $('btnSetup').disabled=false;
+  });
+}
+function doLogin(){
+  var user=$('inUser').value,pass=$('inPass').value;
+  if(!user||!pass){showErr('Unesi korisničko ime i šifru.');return}
+  var raw=localStorage.getItem(AUTH_KEY);
+  if(!raw){setMode(true);return}
+  var d=JSON.parse(raw);
+  $('btnLogin').disabled=true;
+  deriveKey(user,pass,b64d(d.salt),d.iter).then(function(key){
+    return crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(d.iv)},key,b64d(d.ct));
+  }).then(function(pt){
+    var cfg=JSON.parse(new TextDecoder().decode(pt));
+    return ghConnect(cfg.tok,cfg.repo).then(function(){
+      sessionStorage.setItem('fames_tok',cfg.tok);sessionStorage.setItem('fames_repo',cfg.repo);
+      enterPanel();
+    });
+  }).catch(function(e){
+    showErr(e&&e.message&&e.message.indexOf('GitHub')===0?e.message:'Pogrešno korisničko ime ili šifra.');
+    $('btnLogin').disabled=false;
+  });
+}
+function ghConnect(tok,repo){
+  S.tok=tok;S.repo=repo;
+  return gh('/repos/'+repo).then(function(r){S.branch=r.default_branch});
+}
+function enterPanel(){
+  $('topSt').textContent=S.repo+' @ '+S.branch;
+  $('btnLogout').style.display='';
+  $('vLogin').style.display='none';$('vPanel').style.display='';
+  reloadRemote(false);
+}
+function resetAuth(){
+  showMask('Reset pristupa','Briše sačuvani (šifrovani) token s ovog računara — trebat će ti GitHub token za novo podešavanje. Nastaviti?',function(){
+    localStorage.removeItem(AUTH_KEY);sessionStorage.clear();location.reload();
+  });
+}
+function logout(){sessionStorage.clear();location.reload()}
+
+/* ══════════ UČITAVANJE index.html ══════════ */
+function reloadRemote(confirmLoss){
+  if(confirmLoss&&S.dirty){showMask('Odbaciti izmjene?','Imaš neobjavljene izmjene koje će biti izgubljene ako ponovo učitaš iz repoa.',function(){S.dirty=false;reloadRemote(false)});return}
+  toast('Učitavam index.html iz repoa...');
+  return gh('/repos/'+S.repo+'/git/trees/'+S.branch)
+  .then(function(t){
+    var f=t.tree.filter(function(x){return x.path===FILE_PATH})[0];
+    if(!f)throw new Error(FILE_PATH+' ne postoji u repou');
+    S.fileSha=f.sha;
+    return gh('/repos/'+S.repo+'/git/blobs/'+f.sha);
+  }).then(function(b){
+    S.html=b64ToText(b.content);
+    S.P=parseP(S.html);
+    setDirty(false);closeEditor();fillCatSelects();renderList();
+    toast('Učitano: '+S.P.length+' proizvoda');
+  }).catch(function(e){toast(e.message,true)});
+}
+
+/* ══════════ PARSIRANJE / SERIJALIZACIJA P BLOKA ══════════ */
+function findPBlock(html){
+  var i=html.indexOf('var P=[');
+  if(i<0)throw new Error('Ne mogu naći "var P=[" u index.html');
+  var j=html.indexOf('\n];',i);
+  if(j<0)throw new Error('Ne mogu naći kraj P bloka');
+  return{start:i,end:j+3};
+}
+function parseP(html){
+  var b=findPBlock(html);
+  var code=html.slice(b.start,b.end);
+  var fn=new Function('var SVG_FORKLIFT="SVG",SVG_BAGER="SVG",SVG_UTOV="SVG",SVG_KOMB="SVG";'+code+';return P;');
+  var arr=fn();
+  arr.forEach(function(p){
+    p.imgs=p.imgs||[];p.opts=p.opts||[];p.specs=p.specs||[];p.tags=p.tags||[];
+    p.badge=p.badge||null;p.bc=p.bc||'';p.stock=!!p.stock;p.price=p.price||0;
+    p.brand=p.brand||'LONKING';p.pogon=p.pogon||'dizel';
+  });
+  return arr;
+}
+function jstr(s){return "'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,' ')+"'"}
+function serializeP(arr){
+  var out=['var P=[',
+   '  // Uređeno kroz FAMES Admin panel — '+new Date().toISOString().slice(0,10)];
+  arr.forEach(function(p,k){
+    var badge=p.badge?jstr(p.badge):'null';
+    var imgs='['+p.imgs.map(jstr).join(',')+']';
+    var specs='['+p.specs.map(function(r){return '['+jstr(r[0])+','+jstr(r[1])+']'}).join(',')+']';
+    var line='  {id:'+p.id+',img:'+jstr(p.img)+',imgs:'+imgs+",cat:"+jstr(p.cat)+',svg:SVG_FORKLIFT,badge:'+badge+',bc:'+jstr(p.bc)+',\n'
+     +'   name:'+jstr(p.name)+',cl:'+jstr(p.cl)+',brand:'+jstr(p.brand)+',pogon:'+jstr(p.pogon)+',\n'
+     +'   desc:'+jstr(p.desc)+',\n'
+     +'   opts:['+p.opts.map(jstr).join(',')+'],\n'
+     +'   specs:'+specs+',\n'
+     +'   tags:['+p.tags.map(jstr).join(',')+'],price:'+(p.price||0)+',stock:'+(p.stock?'true':'false')+'}'+(k<arr.length-1?',':'');
+    out.push(line);
+  });
+  out.push('];');
+  return out.join('\n');
+}
+function buildHtml(){
+  var b=findPBlock(S.html);
+  var html=S.html.slice(0,b.start)+serializeP(S.P)+S.html.slice(b.end);
+  /* JSON-LD ItemList uskladi s proizvodima */
+  html=html.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/g,function(m,a,body,c){
+    try{
+      var d=JSON.parse(body);
+      if(d['@type']==='ItemList'){
+        d.itemListElement=S.P.map(function(p,k){return{'@type':'ListItem',position:k+1,
+          item:{'@type':'Product',name:p.name,brand:{'@type':'Brand',name:p.brand.charAt(0)+p.brand.slice(1).toLowerCase()},category:CATS[p.cat]||p.cat}}});
+        return a+JSON.stringify(d)+c;
+      }
+    }catch(e){}
+    return m;
+  });
+  return html;
+}
+
+/* ══════════ LISTA ══════════ */
+function fillCatSelects(){
+  var o1='<option value="">Sve</option>',o2='';
+  Object.keys(CATS).forEach(function(k){o1+='<option value="'+k+'">'+CATS[k]+'</option>';o2+='<option value="'+k+'">'+CATS[k]+'</option>'});
+  $('qcat').innerHTML=o1;$('f_cat').innerHTML=o2;
+}
+function renderList(){
+  var q=$('q').value.toLowerCase(),qc=$('qcat').value;
+  var h='';
+  S.P.forEach(function(p,i){
+    if(qc&&p.cat!==qc)return;
+    if(q&&(p.name+' '+p.cl).toLowerCase().indexOf(q)<0)return;
+    h+='<div class="pitem'+(i===S.curIdx?' on':'')+'" onclick="openEditor('+i+')">'
+      +'<img src="'+p.img+'" alt="">'
+      +'<div><div class="nm">'+esc(p.name)+'</div><div class="ct">'+esc(CATS[p.cat]||p.cat)+'</div></div>'
+      +'<span class="idb">#'+p.id+'</span></div>';
+  });
+  $('plBody').innerHTML=h||'<div style="padding:22px;color:#999;font-size:.8rem">Nema rezultata.</div>';
+}
+
+/* ══════════ EDITOR ══════════ */
+function openEditor(i){
+  if(S.cur&&formChanged()){showMask('Nesačuvane izmjene','Trenutni proizvod ima izmjene koje nisu sačuvane. Odbaciti ih?',function(){S.cur=null;openEditor(i)});return}
+  S.curIdx=i;
+  var p=S.P[i];
+  S.cur=JSON.parse(JSON.stringify(p)); /* radna kopija */
+  $('edEmpty').style.display='none';$('edForm').style.display='';
+  $('edTitle').textContent=p.name||'Novi proizvod';$('edId').textContent='#'+p.id;
+  $('f_name').value=p.name;$('f_cl').value=p.cl;$('f_cat').value=p.cat;
+  $('f_brand').value=p.brand;$('f_pogon').value=p.pogon;
+  $('f_badge').value=p.badge||'';$('f_stock').value=p.stock?'true':'false';
+  $('f_tags').value=p.tags.join(', ');
+  $('f_desc').value=p.desc;
+  renderImgs();renderSpecs();renderOpts();renderList();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function closeEditor(){S.cur=null;S.curIdx=-1;$('edForm').style.display='none';$('edEmpty').style.display='';renderList()}
+function formChanged(){
+  if(!S.cur)return false;
+  var f=collectForm();
+  return JSON.stringify(f)!==JSON.stringify(strip(S.P[S.curIdx]||{}));
+  function strip(p){var c=JSON.parse(JSON.stringify(p));return c}
+}
+function collectForm(){
+  var c=JSON.parse(JSON.stringify(S.cur));
+  c.name=$('f_name').value.trim();c.cl=$('f_cl').value.trim();c.cat=$('f_cat').value;
+  c.brand=$('f_brand').value;c.pogon=$('f_pogon').value;
+  c.badge=$('f_badge').value||null;c.bc=c.badge==='Novo'?'pc-badge-blk':'';
+  c.stock=$('f_stock').value==='true';
+  c.tags=$('f_tags').value.split(',').map(function(t){return t.trim()}).filter(Boolean);
+  c.desc=$('f_desc').value.trim();
+  c.specs=[].map.call(document.querySelectorAll('#specs .r'),function(r){
+    var a=r.children[0].value.trim(),b=r.children[1].value.trim();return a||b?[a,b]:null}).filter(Boolean);
+  c.opts=[].map.call(document.querySelectorAll('#opts .r1 input'),function(x){return x.value.trim()}).filter(Boolean);
+  return c;
+}
+function saveProduct(){
+  var c=collectForm();
+  if(!c.name){toast('Naziv je obavezan',true);return}
+  if(!c.img){toast('Proizvod mora imati bar jednu sliku',true);return}
+  if(!c.desc){toast('Opis je obavezan',true);return}
+  S.P[S.curIdx]=c;S.cur=JSON.parse(JSON.stringify(c));
+  setDirty(true);renderList();
+  $('edTitle').textContent=c.name;
+  toast('Sačuvano (lokalno) — klikni „Objavi" kad završiš');
+}
+function newProduct(){
+  var maxId=S.P.reduce(function(m,p){return Math.max(m,p.id)},0);
+  S.P.push({id:maxId+1,img:'',imgs:[],cat:'viljuskar',svg:'SVG',badge:null,bc:'',name:'',cl:'',
+    brand:'LONKING',pogon:'dizel',desc:'',opts:[],specs:[['Garancija','24 mjeseca']],tags:[],price:0,stock:false});
+  openEditor(S.P.length-1);
+  $('edTitle').textContent='Novi proizvod';
+}
+function askDelete(){
+  var p=S.P[S.curIdx];
+  showMask('Obriši proizvod','„'+p.name+'" će biti uklonjen sa sajta pri sljedećoj objavi. Sigurno?',function(){
+    S.P.splice(S.curIdx,1);closeEditor();setDirty(true);renderList();toast('Obrisano (lokalno)');
+  });
+}
+
+/* ══════════ SLIKE ══════════ */
+function allImgs(){var a=[];if(S.cur.img)a.push(S.cur.img);return a.concat(S.cur.imgs)}
+function renderImgs(){
+  var h='';
+  allImgs().forEach(function(src,k){
+    h+='<div class="imgb">'+(k===0?'<span class="main-b">Glavna</span>':'')+'<img src="'+src+'">'
+      +'<div class="ia">'
+      +(k>0?'<button onclick="imgMain('+k+')">Glavna</button>':'')
+      +'<button class="del" onclick="imgDel('+k+')">Obriši</button></div></div>';
+  });
+  h+='<div class="addimg" onclick="$(\'fileIn\').click()"><span style="font-size:1.4rem">+</span>Dodaj sliku</div>';
+  $('imgs').innerHTML=h;
+}
+function imgMain(k){
+  var a=allImgs();var pick=a.splice(k,1)[0];a.unshift(pick);
+  S.cur.img=a[0];S.cur.imgs=a.slice(1);renderImgs();
+}
+function imgDel(k){
+  var a=allImgs();a.splice(k,1);
+  S.cur.img=a[0]||'';S.cur.imgs=a.slice(1);renderImgs();
+}
+function addImages(files){
+  var list=[].slice.call(files);
+  (function next(){
+    var f=list.shift();
+    if(!f){renderImgs();$('fileIn').value='';return}
+    processImage(f,function(dataUrl){
+      if(!S.cur.img)S.cur.img=dataUrl;else S.cur.imgs.push(dataUrl);
+      next();
+    });
+  })();
+}
+/* 1200×900, bijela pozadina, JPEG 0.82 */
+function processImage(file,cb){
+  var img=new Image();
+  img.onload=function(){
+    var W=1200,H=900;
+    var c=document.createElement('canvas');c.width=W;c.height=H;
+    var x=c.getContext('2d');
+    x.fillStyle='#fff';x.fillRect(0,0,W,H);
+    var s=Math.min(W*0.92/img.width,H*0.92/img.height,2.2);
+    var nw=img.width*s,nh=img.height*s;
+    x.drawImage(img,(W-nw)/2,(H-nh)/2,nw,nh);
+    cb(c.toDataURL('image/jpeg',0.82));
+    URL.revokeObjectURL(img.src);
+  };
+  img.onerror=function(){toast('Ne mogu učitati sliku '+file.name,true)};
+  img.src=URL.createObjectURL(file);
+}
+
+/* ══════════ SPECIFIKACIJE / OPCIJE ══════════ */
+function renderSpecs(){
+  $('specs').innerHTML=S.cur.specs.map(function(r){
+    return '<div class="r"><input value="'+esc(r[0])+'" placeholder="Naziv (npr. Motor)"><input value="'+esc(r[1])+'" placeholder="Vrijednost"><button class="x" onclick="this.parentNode.remove()">✕</button></div>';
+  }).join('');
+}
+function addSpec(){var d=document.createElement('div');d.className='r';d.innerHTML='<input placeholder="Naziv"><input placeholder="Vrijednost"><button class="x" onclick="this.parentNode.remove()">✕</button>';$('specs').appendChild(d)}
+function renderOpts(){
+  $('opts').innerHTML=S.cur.opts.map(function(o){
+    return '<div class="r1"><input value="'+esc(o)+'"><button class="x" onclick="this.parentNode.remove()">✕</button></div>';
+  }).join('');
+}
+function addOpt(){var d=document.createElement('div');d.className='r1';d.innerHTML='<input placeholder="npr. Bočni pomak"><button class="x" onclick="this.parentNode.remove()">✕</button>';$('opts').appendChild(d)}
+
+/* ══════════ OBJAVA (Git Data API) ══════════ */
+function publish(){
+  if(!S.dirty)return;
+  /* validacija prije slanja */
+  for(var i=0;i<S.P.length;i++){var p=S.P[i];
+    if(!p.name||!p.img||!p.desc){toast('Proizvod #'+p.id+' nema naziv, sliku ili opis',true);openEditor(i);return}}
+  var html;
+  try{
+    html=buildHtml();
+    var check=parseP(html); /* round-trip provjera */
+    if(check.length!==S.P.length)throw new Error('round-trip: broj proizvoda se ne poklapa');
+  }catch(e){toast('Greška pri sastavljanju fajla: '+e.message,true);return}
+  showMask('Objavi na sajt','Objavljuješ '+S.P.length+' proizvoda. Commit ide na '+S.repo+' ('+S.branch+'), Vercel zatim sam postavlja novu verziju (1–2 min). Nastaviti?',function(){doPublish(html)});
+}
+function doPublish(html){
+  var prog=$('pubProg');prog.style.display='block';
+  $('btnPub').disabled=true;
+  function st(m){prog.textContent=m}
+  var refSha,baseTree;
+  st('1/5 · Čitam trenutno stanje...');
+  gh('/repos/'+S.repo+'/git/ref/heads/'+S.branch)
+  .then(function(r){refSha=r.object.sha;return gh('/repos/'+S.repo+'/git/commits/'+refSha)})
+  .then(function(c){baseTree=c.tree.sha;
+    st('2/5 · Šaljem novi index.html ('+(html.length/1048576).toFixed(1)+' MB)...');
+    return gh('/repos/'+S.repo+'/git/blobs',{method:'POST',body:JSON.stringify({content:textToB64(html),encoding:'base64'})})})
+  .then(function(b){
+    st('3/5 · Pravim novo stablo...');
+    return gh('/repos/'+S.repo+'/git/trees',{method:'POST',body:JSON.stringify({base_tree:baseTree,tree:[{path:FILE_PATH,mode:'100644',type:'blob',sha:b.sha}]})})})
+  .then(function(t){
+    st('4/5 · Commit...');
+    return gh('/repos/'+S.repo+'/git/commits',{method:'POST',body:JSON.stringify({message:'Admin: ažuriranje proizvoda ('+S.P.length+' kom)',tree:t.sha,parents:[refSha]})})})
+  .then(function(c){
+    st('5/5 · Ažuriram granu...');
+    return gh('/repos/'+S.repo+'/git/refs/heads/'+S.branch,{method:'PATCH',body:JSON.stringify({sha:c.sha})})})
+  .then(function(){
+    S.html=html;setDirty(false);
+    st('');prog.style.display='none';
+    toast('Objavljeno! Vercel postavlja novu verziju (1–2 min).');
+  })
+  .catch(function(e){prog.style.display='none';$('btnPub').disabled=false;toast(e.message,true)});
+}
+
+/* ══════════ AUTO-PRIJAVA ══════════ */
+(function(){
+  /* očisti stari (nešifrovani) način čuvanja ako postoji */
+  localStorage.removeItem('fames_tok');localStorage.removeItem('fames_repo');
+  var t=sessionStorage.getItem('fames_tok'),r=sessionStorage.getItem('fames_repo');
+  if(t&&r){ghConnect(t,r).then(enterPanel).catch(function(){sessionStorage.clear();setMode(!localStorage.getItem(AUTH_KEY))});return}
+  setMode(!localStorage.getItem(AUTH_KEY));
+})();
+
+/* test kuke (bezopasne u produkciji) */
+window.__test={parseP:parseP,serializeP:serializeP,findPBlock:findPBlock,S:S,
+  loadHtml:function(h){S.html=h;S.P=parseP(h);fillCatSelects();renderList();
+    $('vLogin').style.display='none';$('vPanel').style.display='';},
+  buildHtml:buildHtml};
+</script>
+</body>
+</html>
