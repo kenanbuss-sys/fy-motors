@@ -1,28 +1,77 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/dashboard.html" },
-    { "source": "/admin/", "destination": "/dashboard.html" }
+    {
+      "source": "/admin",
+      "destination": "/panel-fames-x7k29m.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/panel-fames-x7k29m.html"
+    },
+    {
+      "source": "/crm",
+      "destination": "/dashboard.html"
+    },
+    {
+      "source": "/crm/",
+      "destination": "/dashboard.html"
+    }
   ],
   "headers": [
     {
+      "source": "/panel-fames-x7k29m.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
       "source": "/dashboard.html",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
       ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     },
     {
       "source": "/sitemap.xml",
       "headers": [
-        { "key": "Content-Type", "value": "application/xml" }
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
+        }
       ]
     }
   ]
