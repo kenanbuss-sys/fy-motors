@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Admin i CRM — ne indeksirati
+Disallow: /admin
+Disallow: /admin/
+Disallow: /crm
+Disallow: /crm/
+Disallow: /dashboard.html
+Disallow: /panel-fames-x7k29m.html
+
+# Googleov robot za slike
+User-agent: Googlebot-Image
+Allow: /
+
+Sitemap: https://fames.ba/sitemap.xml
